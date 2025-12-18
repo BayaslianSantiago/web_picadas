@@ -454,7 +454,7 @@
 </header>
 
 <div class="location-banner">
-    UNICAMENTE PEDIDOS PARA LA SUCURSAL AVELLANEDA - Av. Bartolomé Mitre 1199, B1870 Avellaneda, Provincia de Buenos Aires
+    UNICAMENTE PEDIDOS PARA LA SUCURSAL AVELLANEDA - Av. Bartolomé Mitre 1199, Avellaneda.
 </div>
 
 <div class="container">
@@ -767,7 +767,7 @@
         const dateFormatted = date ? new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'No especificado';
         const timeFormatted = time || 'No especificado';
         
-        const mensaje = `Hola Estancia San Francisco!%0A%0AQuiero encargar:%0APicada: *${selectedPicada.nombre}*%0ATamaño: *${size}*%0AFecha: *${dateFormatted}*%0AHorario: *${timeFormatted}*%0ATotal: *${price.toLocaleString('es-AR')}*%0A%0ASucursal: Avellaneda - Av. Bartolomé Mitre 1199%0A%0A¡Gracias!`;
+        const mensaje = `Hola Estancia San Francisco!%0A%0AQuiero encargar:%0APicada: *${selectedPicada.nombre}*%0ATamaño: *${size}*%0AFecha: *${dateFormatted}*%0AHorario: *${timeFormatted}*%0ATotal: *${price.toLocaleString('es-AR')}*%0A ¡Gracias!`;
         btn.href = `https://wa.me/${phone}?text=${mensaje}`;
     }
 
