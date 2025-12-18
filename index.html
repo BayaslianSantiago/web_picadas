@@ -240,29 +240,6 @@
             50% { opacity: 1; }
         }
 
-        /* Navegación del carrusel */
-        .carousel-nav {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .nav-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #ddd;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .nav-dot.active {
-            background: var(--bordo);
-            width: 30px;
-            border-radius: 6px;
-        }
-
         /* Formulario de Opciones */
         .options-section {
             background: white;
@@ -313,16 +290,6 @@
             box-shadow: 0 0 0 3px rgba(128,0,32,0.1);
         }
 
-        select:hover, input:hover {
-            border-color: var(--dorado);
-        }
-
-        select:disabled, input:disabled {
-            background-color: #f5f5f5;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
         .info-box {
             font-size: 0.95rem;
             background: linear-gradient(135deg, #f8f8f8 0%, #efefef 100%);
@@ -345,10 +312,6 @@
             display: none;
         }
 
-        .size-info strong {
-            color: var(--bordo);
-        }
-
         .price-display {
             font-size: 2.5rem;
             font-weight: bold;
@@ -359,12 +322,6 @@
             background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
             border-radius: 10px;
             border: 2px solid var(--dorado);
-            animation: pulse 2s ease infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
         }
 
         /* Botón WhatsApp */
@@ -386,16 +343,6 @@
             transition: all 0.3s ease;
         }
 
-        .btn-order:hover {
-            transform: translateX(-50%) translateY(-3px);
-            box-shadow: 0 8px 25px rgba(37,211,102,0.5);
-            background: linear-gradient(135deg, #20b358 0%, var(--verde-wa) 100%);
-        }
-
-        .btn-order:active {
-            transform: translateX(-50%) translateY(-1px);
-        }
-
         .alert {
             background: #fff3cd;
             border: 2px solid #ffc107;
@@ -404,45 +351,13 @@
             border-radius: 8px;
             margin: 20px 0;
             display: none;
-            animation: slideIn 0.3s ease;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             header h1 { font-size: 1.8rem; }
-            header p { font-size: 1rem; }
-            
-            h2 { font-size: 1.5rem; }
-            
-            .picada-card {
-                min-width: 280px;
-                max-width: 280px;
-            }
-
-            .picada-image { height: 240px; }
-            
-            .options-section { padding: 20px; }
-            
+            .picada-card { min-width: 280px; max-width: 280px; }
             .price-display { font-size: 2rem; }
-            
-            .btn-order {
-                padding: 15px 25px;
-                font-size: 1rem;
-                bottom: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container { padding: 20px 15px; }
-            
-            .picada-card {
-                min-width: 260px;
-                max-width: 260px;
-            }
-
-            .picada-image { height: 220px; }
-
-            .picada-card h3 { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -490,6 +405,9 @@
             <select id="delivery-time" onchange="updateSummary()" disabled>
                 <option value="">Primero seleccioná una fecha</option>
             </select>
+            <div id="special-date-notice" class="info-box" style="display: none; background-color: #fff3cd; border-left-color: #ffc107; margin-top: 15px;">
+                <strong>¡Atención!</strong> Por ser víspera de festividad, el retiro es únicamente hasta las 14:00hs.
+            </div>
         </div>
 
         <div id="price-display" class="price-display"></div>
@@ -500,100 +418,34 @@
 
 <script>
     const picadasData = [
-        { 
-            id: 6, 
-            nombre: "San Francisco", 
-            imagen: "san-francisco.jpg", 
-            descripcion: "Nuestra picada estrella con jamón crudo tipo parma y lomo a las finas hierbas. Una combinación perfecta de sabores premium.",
-            ingredientes: "Aceitunas verdes, tomates hidratados, mozzarella bocconcini, jamón cocido y crudo, pategrás, queso azul, salame Milán y criollo, lomo a las finas hierbas.", 
-            precios: { "Chica": 34999.99, "Mediana": 46999.99, "Grande": 84999.99 } 
-        },
-        { 
-            id: 3, 
-            nombre: "Ibérica", 
-            imagen: "iberica.jpg", 
-            descripcion: "La elegancia española en tu mesa. Única con queso de cabra, bondiola serrana y jamón crudo serrano deshuesado de primera calidad.",
-            ingredientes: "Aceitunas negras condimentadas, queso de cabra, jamón crudo serrano, salame milán español, candelario, queso pategrás, queso azul, jamón cocido natural, Bondiola Serrana.", 
-            precios: { "Chica": 35999.99, "Mediana": 48999.99, "Grande": 89999.99 } 
-        },
-        { 
-            id: 1, 
-            nombre: "Tradicional", 
-            imagen: "tradicional.jpg", 
-            descripcion: "Los sabores clásicos que nunca fallan. Con lomo ahumado y una selección de quesos artesanales de La Paulina.",
-            ingredientes: "Aceitunas verdes rellenas, Lomo ahumado, queso fontina suizo La Paulina, queso Mar del plata de campo, queso azul, salame criollo, longaniza casera.", 
-            precios: { "Chica": 31999.99, "Mediana": 43999.99, "Grande": 80999.99 } 
-        },
-        { 
-            id: 5, 
-            nombre: "Italiana", 
-            imagen: "italiana.jpg", 
-            descripcion: "La opción más premium. Con ingredientes exclusivos: mortadela con pistachos, sorpressatta y queso parmesano auténtico.",
-            ingredientes: "Aceitunas verdes rellenas, tomates hidratados, mozzarella bocconcini, jamón natural, jamón crudo tipo parma, queso gruyere, mortadela con pistachos, sorpressatta, queso parmesano.", 
-            precios: { "Chica": 46999.99, "Mediana": 63999.99, "Grande": 119999.99 } 
-        },
-        { 
-            id: 7, 
-            nombre: "Criolla", 
-            imagen: "criolla.jpg", 
-            descripcion: "Ideal para paladares clásicos argentinos. Con pepinitos en vinagre y mortadela de primera selección que te recordarán a casa.",
-            ingredientes: "Aceitunas, pepinitos, tomates hidratados, jamón cocido y crudo nacional, lomito ahumado, mortadela, queso fontina, Mar del Plata y salame criollo.", 
-            precios: { "Chica": 28999.99, "Mediana": 39999.99, "Grande": 69999.99 } 
-        },
-        { 
-            id: 2, 
-            nombre: "Chacarera", 
-            imagen: "chacarera.jpg", 
-            descripcion: "El espíritu del campo argentino. Salamines artesanales y longaniza calabresa para los que buscan sabores intensos.",
-            ingredientes: "Salamín picado fino, longaniza calabresa, queso saborizado, aceitunas negras, aceitunas verdes rellenas, queso pategrás, salame criollo.", 
-            precios: { "Chica": 30999.99, "Mediana": 44999.99, "Grande": 85999.99 } 
-        },
-        { 
-            id: 4, 
-            nombre: "Tabla de Quesos", 
-            imagen: "quesos.jpg", 
-            descripcion: "Para los verdaderos amantes del queso. Una selección de 10 variedades premium que incluye gruyere, queso de cabra y azul.",
-            ingredientes: "Aceitunas verdes rellenas, pategrás, fontina suizo, taluhet, quesos saborizados, queso sardo, queso de cabra, gruyere, queso azul, queso Mar del Plata de campo.", 
-            precios: { "Chica": 35999.99, "Mediana": 49999.99, "Grande": 87999.99 } 
-        },
-        { 
-            id: 8, 
-            nombre: "Corazón 1", 
-            imagen: "corazon-1.jpg", 
-            descripcion: "Perfecta para compartir en pareja. Presentación romántica con cerezas al marrasquino y una selección equilibrada de fiambres y quesos.",
-            ingredientes: "Jamón cocido natural, queso en barra, jamón crudo, queso pategrás, aceitunas verdes rellenas, cerezas al marrasquino.", 
-            precios: { "Único (2 pers)": 21499.99 } 
-        },
-        { 
-            id: 9, 
-            nombre: "Corazón 2", 
-            imagen: "corazon-2.jpg", 
-            descripcion: "La opción íntima con un toque gourmet. Lomo ahumado y aceitunas premium en formato ideal para dos personas.",
-            ingredientes: "Salamín picado fino, lomo ahumado, queso en barra, queso pategras, aceitunas verdes y negras súper.", 
-            precios: { "Único (2 pers)": 22499.99 } 
-        }
+        { id: 6, nombre: "San Francisco", imagen: "san-francisco.jpg", descripcion: "Nuestra picada estrella con jamón crudo tipo parma y lomo a las finas hierbas.", ingredientes: "Aceitunas verdes, tomates hidratados, mozzarella bocconcini, jamón cocido y crudo, pategrás, queso azul, salame Milán y criollo, lomo a las finas hierbas.", precios: { "Chica": 34999.99, "Mediana": 46999.99, "Grande": 84999.99 } },
+        { id: 3, nombre: "Ibérica", imagen: "iberica.jpg", descripcion: "La elegancia española en tu mesa. Única con queso de cabra y jamón crudo serrano.", ingredientes: "Aceitunas negras condimentadas, queso de cabra, jamón crudo serrano, salame milán español, candelario, queso pategrás, queso azul, jamón cocido natural, Bondiola Serrana.", precios: { "Chica": 35999.99, "Mediana": 48999.99, "Grande": 89999.99 } },
+        { id: 1, nombre: "Tradicional", imagen: "tradicional.jpg", descripcion: "Los sabores clásicos que nunca fallan. Con lomo ahumado y quesos artesanales.", ingredientes: "Aceitunas verdes rellenas, Lomo ahumado, queso fontina suizo La Paulina, queso Mar del plata de campo, queso azul, salame criollo, longaniza casera.", precios: { "Chica": 31999.99, "Mediana": 43999.99, "Grande": 80999.99 } },
+        { id: 5, nombre: "Italiana", imagen: "italiana.jpg", descripcion: "La opción más premium. Con ingredientes exclusivos: mortadela con pistachos y sorpressatta.", ingredientes: "Aceitunas verdes rellenas, tomates hidratados, mozzarella bocconcini, jamón natural, jamón crudo tipo parma, queso gruyere, mortadela con pistachos, sorpressatta, queso parmesano.", precios: { "Chica": 46999.99, "Mediana": 63999.99, "Grande": 119999.99 } },
+        { id: 7, nombre: "Criolla", imagen: "criolla.jpg", descripcion: "Ideal para paladares clásicos argentinos. Con pepinitos y mortadela de primera.", ingredientes: "Aceitunas, pepinitos, tomates hidratados, jamón cocido y crudo nacional, lomito ahumado, mortadela, queso fontina, Mar del Plata y salame criollo.", precios: { "Chica": 28999.99, "Mediana": 39999.99, "Grande": 69999.99 } },
+        { id: 2, nombre: "Chacarera", imagen: "chacarera.jpg", descripcion: "El espíritu del campo argentino. Salamines artesanales y longaniza calabresa.", ingredientes: "Salamín picado fino, longaniza calabresa, queso saborizado, aceitunas negras, aceitunas verdes rellenas, queso pategrás, salame criollo.", precios: { "Chica": 30999.99, "Mediana": 44999.99, "Grande": 85999.99 } },
+        { id: 4, nombre: "Tabla de Quesos", imagen: "quesos.jpg", descripcion: "Para amantes del queso. Selección de 10 variedades premium.", ingredientes: "Aceitunas verdes rellenas, pategrás, fontina suizo, taluhet, quesos saborizados, queso sardo, queso de cabra, gruyere, queso azul, queso Mar del Plata de campo.", precios: { "Chica": 35999.99, "Mediana": 49999.99, "Grande": 87999.99 } },
+        { id: 8, nombre: "Corazón 1", imagen: "corazon-1.jpg", descripcion: "Perfecta para compartir en pareja. Presentación romántica.", ingredientes: "Jamón cocido natural, queso en barra, jamón crudo, queso pategrás, aceitunas verdes rellenas, cerezas al marrasquino.", precios: { "Único (2 pers)": 21499.99 } },
+        { id: 9, nombre: "Corazón 2", imagen: "corazon-2.jpg", descripcion: "Opción íntima con toque gourmet.", ingredientes: "Salamín picado fino, lomo ahumado, queso en barra, queso pategras, aceitunas verdes y negras súper.", precios: { "Único (2 pers)": 22499.99 } }
     ];
 
     let selectedPicada = null;
     const phone = "5491173644584";
 
-    // Horarios del local por día
     const storeHours = {
-        0: { open: '09:30', close: '13:30' }, // Domingo
-        1: { open: '09:30', close: '20:00' }, // Lunes
-        2: { open: '09:30', close: '20:00' }, // Martes
-        3: { open: '09:30', close: '20:00' }, // Miércoles
-        4: { open: '09:30', close: '20:00' }, // Jueves
-        5: { open: '09:30', close: '20:00' }, // Viernes
-        6: { open: '09:30', close: '20:00' }  // Sábado
+        0: { open: '09:30', close: '13:30' },
+        1: { open: '09:30', close: '20:00' },
+        2: { open: '09:30', close: '20:00' },
+        3: { open: '09:30', close: '20:00' },
+        4: { open: '09:30', close: '20:00' },
+        5: { open: '09:30', close: '20:00' },
+        6: { open: '09:30', close: '20:00' }
     };
 
-    // Configurar fecha mínima (hoy)
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('delivery-date').setAttribute('min', today);
     document.getElementById('delivery-date').value = today;
 
-    // Renderizar carrusel
     const carousel = document.getElementById('carousel');
     const carouselNav = document.getElementById('carousel-nav');
     
@@ -619,21 +471,6 @@
         carouselNav.appendChild(dot);
     });
 
-    carousel.addEventListener('scroll', () => {
-        const cards = carousel.querySelectorAll('.picada-card');
-        const dots = carouselNav.querySelectorAll('.nav-dot');
-        
-        cards.forEach((card, index) => {
-            const rect = card.getBoundingClientRect();
-            const carouselRect = carousel.getBoundingClientRect();
-            
-            if (rect.left >= carouselRect.left && rect.left < carouselRect.left + carouselRect.width / 2) {
-                dots.forEach(d => d.classList.remove('active'));
-                dots[index].classList.add('active');
-            }
-        });
-    });
-
     function scrollToCard(index) {
         const cards = carousel.querySelectorAll('.picada-card');
         cards[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
@@ -643,16 +480,8 @@
         selectedPicada = picada;
         document.querySelectorAll('.picada-card').forEach(c => c.classList.remove('selected'));
         element.classList.add('selected');
-
         document.getElementById('alert-select').style.display = 'none';
-
-        const optionsSection = document.getElementById('section-options');
-        optionsSection.style.display = 'block';
-        
-        setTimeout(() => {
-            optionsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 100);
-
+        document.getElementById('section-options').style.display = 'block';
         document.getElementById('selected-title').innerText = picada.nombre;
         document.getElementById('selected-ingredients').innerHTML = `<strong>Incluye:</strong> ${picada.ingredientes}`;
 
@@ -664,18 +493,18 @@
             opt.innerText = `${size} - $${picada.precios[size].toLocaleString('es-AR')}`;
             sizeSelect.appendChild(opt);
         }
-        
         updateTimeOptions();
-        updateSummary();
     }
 
     function updateTimeOptions() {
         const dateInput = document.getElementById('delivery-date');
         const timeSelect = document.getElementById('delivery-time');
+        const specialNotice = document.getElementById('special-date-notice');
         
         if (!dateInput.value) {
             timeSelect.disabled = true;
             timeSelect.innerHTML = '<option value="">Primero seleccioná una fecha</option>';
+            specialNotice.style.display = 'none';
             return;
         }
 
@@ -688,19 +517,28 @@
         if (!hours) {
             timeSelect.disabled = true;
             timeSelect.innerHTML = '<option value="">Local cerrado este día</option>';
+            specialNotice.style.display = 'none';
             return;
         }
 
-        // Calcular hora mínima (ahora + 2 horas)
+        // LOGICA 24 Y 31 DE DICIEMBRE
+        const month = selectedDate.getMonth() + 1;
+        const day = selectedDate.getDate();
+        let limitTimeStr = hours.close;
+
+        if (month === 12 && (day === 24 || day === 31)) {
+            limitTimeStr = '14:00';
+            specialNotice.style.display = 'block';
+        } else {
+            specialNotice.style.display = 'none';
+        }
+
         const minTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-        
-        // Parsear horarios del local
         const [openHour, openMin] = hours.open.split(':').map(Number);
-        const [closeHour, closeMin] = hours.close.split(':').map(Number);
+        const [closeHour, closeMin] = limitTimeStr.split(':').map(Number);
         
         const openTime = new Date(selectedDate);
         openTime.setHours(openHour, openMin, 0, 0);
-        
         const closeTime = new Date(selectedDate);
         closeTime.setHours(closeHour, closeMin, 0, 0);
 
@@ -708,11 +546,8 @@
         timeSelect.disabled = false;
 
         let hasOptions = false;
-        
-        // Generar opciones cada 30 minutos
         let currentTime = new Date(openTime);
         while (currentTime < closeTime) {
-            // Si es hoy, solo mostrar horarios después de ahora + 2 horas
             if (!isToday || currentTime >= minTime) {
                 const timeStr = currentTime.toTimeString().substring(0, 5);
                 const option = document.createElement('option');
@@ -725,74 +560,45 @@
         }
 
         if (!hasOptions) {
-            timeSelect.innerHTML = '<option value="">No hay horarios disponibles para hoy (requiere 2 horas de anticipación)</option>';
+            timeSelect.innerHTML = '<option value="">Sin horarios disponibles (requiere 2hs de anticipación)</option>';
             timeSelect.disabled = true;
         }
-
         updateSummary();
     }
 
     function updateSummary() {
         if (!selectedPicada) return;
-        
         const size = document.getElementById('size-select').value;
         const price = selectedPicada.precios[size];
         const date = document.getElementById('delivery-date').value;
         const time = document.getElementById('delivery-time').value;
 
-        // Mostrar información del tamaño
         const sizeInfo = document.getElementById('size-info');
         sizeInfo.style.display = 'block';
-        
-        let sizeText = '';
-        if (size === 'Chica') {
-            sizeText = 'Comen 2 / Pican 4 personas';
-        } else if (size === 'Mediana') {
-            sizeText = 'Comen 4 / Pican 6 personas';
-        } else if (size === 'Grande') {
-            sizeText = 'Comen 6 / Pican 12 personas';
-        } else if (size.includes('Único')) {
-            sizeText = 'Tamaño único para 2 personas';
-        }
+        let sizeText = size === 'Chica' ? 'Comen 2 / Pican 4' : size === 'Mediana' ? 'Comen 4 / Pican 6' : size === 'Grande' ? 'Comen 6 / Pican 12' : 'Ideal para 2';
         sizeInfo.innerHTML = `<strong>${sizeText}</strong>`;
 
         document.getElementById('price-display').innerHTML = `
-            <div style="font-size: 1rem; color: #666; font-weight: normal;">Total a pagar:</div>
+            <div style="font-size: 1rem; color: #666;">Total a pagar:</div>
             <div style="font-size: 2.5rem;">$${price.toLocaleString('es-AR')}</div>
         `;
 
         const btn = document.getElementById('whatsapp-btn');
         btn.style.display = 'block';
 
-        const dateFormatted = date ? new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'No especificado';
-        const timeFormatted = time || 'No especificado';
-        
-        const mensaje = `Hola Estancia San Francisco!%0A%0AQuiero encargar:%0APicada: *${selectedPicada.nombre}*%0ATamaño: *${size}*%0AFecha: *${dateFormatted}*%0AHorario: *${timeFormatted}*%0ATotal: *${price.toLocaleString('es-AR')}*%0A ¡Gracias!`;
+        const dateFormatted = date ? new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' }) : '';
+        const mensaje = `Hola Estancia San Francisco Avellaneda!%0A%0AQuiero encargar:%0APicada: *${selectedPicada.nombre}*%0ATamaño: *${size}*%0AFecha: *${dateFormatted}*%0AHorario: *${time}*%0ATotal: *$${price.toLocaleString('es-AR')}*%0A ¡Gracias!`;
         btn.href = `https://wa.me/${phone}?text=${mensaje}`;
     }
 
     function validateOrder() {
-        if (!selectedPicada) {
-            const alert = document.getElementById('alert-select');
-            alert.style.display = 'block';
-            alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 4000);
+        if (!selectedPicada) return false;
+        if (!document.getElementById('delivery-time').value) {
+            alert('Por favor, seleccioná un horario.');
             return false;
         }
-        
-        const time = document.getElementById('delivery-time').value;
-        if (!time) {
-            alert('Por favor, seleccioná un horario de retiro.');
-            return false;
-        }
-        
         return true;
     }
-
-    // Inicializar opciones de horario al cargar
-    updateTimeOptions();
 </script>
 
 </body>
