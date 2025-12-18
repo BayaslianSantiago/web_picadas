@@ -285,7 +285,7 @@
         btn.style.display = 'flex';
         
         const dateF = new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' });
-        const mensaje = `Hola! Quiero encargar:*${selectedPicada.nombre}*%0A📏 Tamaño: *${size}*%0A📅 Para el: *${dateF}*%0A💰 Total: *$${price.toLocaleString('es-AR')}*`;
+        const mensaje = `Hola, Quiero encargar una:*${selectedPicada.nombre}*%0A Tamaño: *${size}*%0A Para el: *${dateF}*%0A Total: *$${price.toLocaleString('es-AR')}*`;
         btn.href = `https://wa.me/${phone}?text=${mensaje}`;
     }
 </script>
