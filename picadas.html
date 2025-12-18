@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos - Estancia San Francisco</title>
+    <style>
+        :root {
+            --bordo: #800020;
+            --dorado: #c5a059;
+            --crema: #fdfaf5;
+            --blanco: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--crema);
+            color: #333;
+            margin: 0;
+            padding-bottom: 100px;
+        }
+
+        header {
+            background-color: var(--bordo);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-bottom: 4px solid var(--dorado);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h2 { color: var(--bordo); border-bottom: 2px solid var(--dorado); padding-bottom: 5px; }
+
+        /* Grilla de Picadas */
+        .picadas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .picada-card {
+            background: var(--blanco);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .picada-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .picada-card.selected {
+            border-color: var(--bordo);
+            background-color: #fff0f0;
+            transform: scale(1.05);
+        }
+
+        /* Formulario de Opciones */
+        .options-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-top: 20px;
+            display: none; /* Se muestra al elegir una picada */
+        }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Botón WhatsApp */
+        .btn-order {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #25d366;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+        }
+
+        .info-box {
+            font-size: 0.9rem;
+            background: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Estancia San Francisco</h1>
+    <p>Armá tu pedido de picada</p>
+</header>
+
+<div class="container">
+    <h2>1. Seleccioná tu Picada</h2>
+    <div id="picadas-container" class="picadas-grid"></div>
+
+    <div id="section-options" class="options-section">
+        <h2 id="selected-title">Detalles del Pedido</h2>
+        <p id="selected-ingredients" class="info-box"></p>
+
+        <div class="form-group" id="size-group">
+            <label for="size">Elegí el tamaño:</label>
+            <select id="size-select" onchange="updateSummary()"></select>
+        </div>
+
+        <div class="form-group">
+            <label for="delivery-date">¿Para cuándo la querés?</label>
+            <input type="date" id="delivery-date" onchange="updateSummary()">
+        </div>
+
+        <div id="price-display" style="font-size: 1.5rem; font-weight: bold; color: var(--bordo); text-align: center; margin: 20px 0;"></div>
+    </div>
+</div>
+
+<a href="#" id="whatsapp-btn" class="btn-order" target="_blank">Pedir por WhatsApp</a>
+
+<script>
+    // Datos JSON de las picadas basados en las fuentes
+    const picadasData = [
+        { id: 1, nombre: "Tradicional", imagen: "tradicional.jpg", ingredientes: "Aceitunas verdes rellenas, Lomo ahumado, queso fontina suizo La Paulina, queso Mar del plata de campo, queso azul, salame criollo, longaniza casera.", precios: { "Chica": 31999.99, "Mediana": 43999.99, "Grande": 80999.99 } },
+        { id: 2, nombre: "Chacarera", imagen: "chacarera.jpg", ingredientes: "Salamín picado fino, longaniza calabresa, queso saborizado, aceitunas negras, aceitunas verdes rellenas, queso pategrás, salame criollo.", precios: { "Chica": 30999.99, "Mediana": 44999.99, "Grande": 85999.99 } },
+        { id: 3, nombre: "Ibérica", imagen: "iberica.jpg", ingredientes: "Aceitunas negras condimentadas, queso de cabra, jamón crudo serrano, salame milán español, candelario, queso pategrás, queso azul, jamón cocido natural, Bondiola Serrana.", precios: { "Chica": 35999.99, "Mediana": 48999.99, "Grande": 89999.99 } },
+        { id: 4, nombre: "Tabla de Quesos", imagen: "quesos.jpg", ingredientes: "Aceitunas verdes rellenas, pategrás, fontina suizo, taluhet, quesos saborizados, queso sardo, queso de cabra, gruyere, queso azul , queso Mar del Plata de campo.", precios: { "Chica": 35999.99, "Mediana": 49999.99, "Grande": 87999.99 } },
+        { id: 5, nombre: "Italiana", imagen: "italiana.jpg", ingredientes: "Aceitunas verdes rellenas, tomates hidratados, mozzarella bocconcini, jamón natural, jamón crudo tipo parma, queso gruyere, mortadela con pistachos, sorpressatta, queso parmesano.", precios: { "Chica": 46999.99, "Mediana": 63999.99, "Grande": 119999.99 } },
+        { id: 6, nombre: "San Francisco", imagen: "san-francisco.jpg", ingredientes: "Aceitunas verdes, tomates hidratados, mozzarella bocconcini, jamón cocido y crudo, pategrás, queso azul, salame Milán y criollo, lomo a las finas hierbas.", precios: { "Chica": 34999.99, "Mediana": 46999.99, "Grande": 84999.99 } },
+        { id: 7, nombre: "Criolla", imagen: "criolla.jpg", ingredientes: "Aceitunas, pepinitos, tomates hidratados, jamón cocido y crudo nacional, lomito ahumado, mortadela, queso fontina, Mar del Plata y salame criollo.", precios: { "Chica": 28999.99, "Mediana": 39999.99, "Grande": 69999.99 } },
+        { id: 8, nombre: "Corazón 1", imagen: "corazon-1.jpg", ingredientes: "Jamón cocido natural, queso en barra, jamón crudo, queso pategrás, aceitunas verdes rellenas, cerezas al marrasquino.", precios: { "Único (2 pers)": 21499.99 } },
+        { id: 9, nombre: "Corazón 2", imagen: "corazon-2.jpg", ingredientes: "Salamín picado fino, lomo ahumado, queso en barra, queso pategras, aceitunas verdes y negras súper.", precios: { "Único (2 pers)": 22499.99 } }
+    ];
+
+    let selectedPicada = null;
+    const phone = "5491173644584";
+
+    // Renderizar picadas
+    const container = document.getElementById('picadas-container');
+    picadasData.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'picada-card';
+        div.innerHTML = `<img src="${p.imagen}" alt="${p.nombre}"><h4>${p.nombre}</h4>`;
+        div.onclick = () => selectPicada(p, div);
+        container.appendChild(div);
+    });
+
+    function selectPicada(picada, element) {
+        selectedPicada = picada;
+        document.querySelectorAll('.picada-card').forEach(c => c.classList.remove('selected'));
+        element.classList.add('selected');
+
+        document.getElementById('section-options').style.display = 'block';
+        document.getElementById('selected-title').innerText = picada.nombre;
+        document.getElementById('selected-ingredients').innerText = "Incluye: " + picada.ingredientes;
+
+        const sizeSelect = document.getElementById('size-select');
+        sizeSelect.innerHTML = '';
+        for (const size in picada.precios) {
+            const opt = document.createElement('option');
+            opt.value = size;
+            opt.innerText = size;
+            sizeSelect.appendChild(opt);
+        }
+        updateSummary();
+    }
+
+    function updateSummary() {
+        if (!selectedPicada) return;
+        const size = document.getElementById('size-select').value;
+        const price = selectedPicada.precios[size];
+        const date = document.getElementById('delivery-date').value;
+
+        document.getElementById('price-display').innerText = `$${price.toLocaleString('es-AR')}`;
+
+        const btn = document.getElementById('whatsapp-btn');
+        btn.style.display = 'block';
+
+        const mensaje = `Hola Estancia San Francisco! Quiero encargar la picada: *${selectedPicada.nombre}* %0A- Tamaño: *${size}* %0A- Para el día: *${date || 'No especificado'}*%0A- Total: *$${price}*`;
+        btn.href = `https://wa.me/${phone}?text=${mensaje}`;
+    }
+</script>
+
+</body>
+</html>
