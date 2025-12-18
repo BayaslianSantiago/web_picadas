@@ -674,7 +674,7 @@
 
         const dateFormatted = date ? new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'No especificado';
         
-        const mensaje = `Hola, %0A%0AQuiero encargar una:%0A *${selectedPicada.nombre}*%0A Tamaño: *${size}*%0A Para: *${dateFormatted}*%0A Total: *${price.toLocaleString('es-AR')}*%0A%0A¡Gracias!`;
+        const mensaje = `Hola, quiero encargar una:%0A*${selectedPicada.nombre}*%0A Tamaño:*${size}*%0A Para el *${dateFormatted}*%0A Total:*${price.toLocaleString('es-AR')}*%0A¡Gracias!`;
         btn.href = `https://wa.me/${phone}?text=${mensaje}`;
     }
 
