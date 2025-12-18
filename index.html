@@ -203,6 +203,14 @@
             font-size: 1.4rem;
         }
 
+        .picada-description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+            margin: 10px 0;
+            min-height: 60px;
+        }
+
         .price-preview {
             font-size: 1.1rem;
             color: var(--dorado);
@@ -416,7 +424,7 @@
 <body>
 
 <header>
-    <h1>🥩 Estancia San Francisco</h1>
+    <h1>Estancia San Francisco</h1>
     <p>Armá tu pedido de picada premium</p>
 </header>
 
@@ -455,15 +463,78 @@
 
 <script>
     const picadasData = [
-        { id: 6, nombre: "San Francisco", imagen: "san-francisco.jpg", ingredientes: "Aceitunas verdes, tomates hidratados, mozzarella bocconcini, jamón cocido y crudo, pategrás, queso azul, salame Milán y criollo, lomo a las finas hierbas.", precios: { "Chica": 34999.99, "Mediana": 46999.99, "Grande": 84999.99 } },
-        { id: 3, nombre: "Ibérica", imagen: "iberica.jpg", ingredientes: "Aceitunas negras condimentadas, queso de cabra, jamón crudo serrano, salame milán español, candelario, queso pategrás, queso azul, jamón cocido natural, Bondiola Serrana.", precios: { "Chica": 35999.99, "Mediana": 48999.99, "Grande": 89999.99 } },
-        { id: 1, nombre: "Tradicional", imagen: "tradicional.jpg", ingredientes: "Aceitunas verdes rellenas, Lomo ahumado, queso fontina suizo La Paulina, queso Mar del plata de campo, queso azul, salame criollo, longaniza casera.", precios: { "Chica": 31999.99, "Mediana": 43999.99, "Grande": 80999.99 } },
-        { id: 5, nombre: "Italiana", imagen: "italiana.jpg", ingredientes: "Aceitunas verdes rellenas, tomates hidratados, mozzarella bocconcini, jamón natural, jamón crudo tipo parma, queso gruyere, mortadela con pistachos, sorpressatta, queso parmesano.", precios: { "Chica": 46999.99, "Mediana": 63999.99, "Grande": 119999.99 } },
-        { id: 7, nombre: "Criolla", imagen: "criolla.jpg", ingredientes: "Aceitunas, pepinitos, tomates hidratados, jamón cocido y crudo nacional, lomito ahumado, mortadela, queso fontina, Mar del Plata y salame criollo.", precios: { "Chica": 28999.99, "Mediana": 39999.99, "Grande": 69999.99 } },
-        { id: 2, nombre: "Chacarera", imagen: "chacarera.jpg", ingredientes: "Salamín picado fino, longaniza calabresa, queso saborizado, aceitunas negras, aceitunas verdes rellenas, queso pategrás, salame criollo.", precios: { "Chica": 30999.99, "Mediana": 44999.99, "Grande": 85999.99 } },
-        { id: 4, nombre: "Tabla de Quesos", imagen: "quesos.jpg", ingredientes: "Aceitunas verdes rellenas, pategrás, fontina suizo, taluhet, quesos saborizados, queso sardo, queso de cabra, gruyere, queso azul, queso Mar del Plata de campo.", precios: { "Chica": 35999.99, "Mediana": 49999.99, "Grande": 87999.99 } },
-        { id: 8, nombre: "Corazón 1", imagen: "corazon-1.jpg", ingredientes: "Jamón cocido natural, queso en barra, jamón crudo, queso pategrás, aceitunas verdes rellenas, cerezas al marrasquino.", precios: { "Único (2 pers)": 21499.99 } },
-        { id: 9, nombre: "Corazón 2", imagen: "corazon-2.jpg", ingredientes: "Salamín picado fino, lomo ahumado, queso en barra, queso pategras, aceitunas verdes y negras súper.", precios: { "Único (2 pers)": 22499.99 } }
+        { 
+            id: 6, 
+            nombre: "San Francisco", 
+            imagen: "san-francisco.jpg", 
+            descripcion: "Nuestra picada estrella con jamón crudo tipo parma y lomo a las finas hierbas. Una combinación perfecta de sabores premium.",
+            ingredientes: "Aceitunas verdes, tomates hidratados, mozzarella bocconcini, jamón cocido y crudo, pategrás, queso azul, salame Milán y criollo, lomo a las finas hierbas.", 
+            precios: { "Chica": 34999.99, "Mediana": 46999.99, "Grande": 84999.99 } 
+        },
+        { 
+            id: 3, 
+            nombre: "Ibérica", 
+            imagen: "iberica.jpg", 
+            descripcion: "La elegancia española en tu mesa. Única con queso de cabra, bondiola serrana y jamón crudo serrano deshuesado de primera calidad.",
+            ingredientes: "Aceitunas negras condimentadas, queso de cabra, jamón crudo serrano, salame milán español, candelario, queso pategrás, queso azul, jamón cocido natural, Bondiola Serrana.", 
+            precios: { "Chica": 35999.99, "Mediana": 48999.99, "Grande": 89999.99 } 
+        },
+        { 
+            id: 1, 
+            nombre: "Tradicional", 
+            imagen: "tradicional.jpg", 
+            descripcion: "Los sabores clásicos que nunca fallan. Con lomo ahumado y una selección de quesos artesanales de La Paulina.",
+            ingredientes: "Aceitunas verdes rellenas, Lomo ahumado, queso fontina suizo La Paulina, queso Mar del plata de campo, queso azul, salame criollo, longaniza casera.", 
+            precios: { "Chica": 31999.99, "Mediana": 43999.99, "Grande": 80999.99 } 
+        },
+        { 
+            id: 5, 
+            nombre: "Italiana", 
+            imagen: "italiana.jpg", 
+            descripcion: "La opción más premium. Con ingredientes exclusivos: mortadela con pistachos, sorpressatta y queso parmesano auténtico.",
+            ingredientes: "Aceitunas verdes rellenas, tomates hidratados, mozzarella bocconcini, jamón natural, jamón crudo tipo parma, queso gruyere, mortadela con pistachos, sorpressatta, queso parmesano.", 
+            precios: { "Chica": 46999.99, "Mediana": 63999.99, "Grande": 119999.99 } 
+        },
+        { 
+            id: 7, 
+            nombre: "Criolla", 
+            imagen: "criolla.jpg", 
+            descripcion: "Ideal para paladares clásicos argentinos. Con pepinitos en vinagre y mortadela de primera selección que te recordarán a casa.",
+            ingredientes: "Aceitunas, pepinitos, tomates hidratados, jamón cocido y crudo nacional, lomito ahumado, mortadela, queso fontina, Mar del Plata y salame criollo.", 
+            precios: { "Chica": 28999.99, "Mediana": 39999.99, "Grande": 69999.99 } 
+        },
+        { 
+            id: 2, 
+            nombre: "Chacarera", 
+            imagen: "chacarera.jpg", 
+            descripcion: "El espíritu del campo argentino. Salamines artesanales y longaniza calabresa para los que buscan sabores intensos.",
+            ingredientes: "Salamín picado fino, longaniza calabresa, queso saborizado, aceitunas negras, aceitunas verdes rellenas, queso pategrás, salame criollo.", 
+            precios: { "Chica": 30999.99, "Mediana": 44999.99, "Grande": 85999.99 } 
+        },
+        { 
+            id: 4, 
+            nombre: "Tabla de Quesos", 
+            imagen: "quesos.jpg", 
+            descripcion: "Para los verdaderos amantes del queso. Una selección de 10 variedades premium que incluye gruyere, queso de cabra y azul.",
+            ingredientes: "Aceitunas verdes rellenas, pategrás, fontina suizo, taluhet, quesos saborizados, queso sardo, queso de cabra, gruyere, queso azul, queso Mar del Plata de campo.", 
+            precios: { "Chica": 35999.99, "Mediana": 49999.99, "Grande": 87999.99 } 
+        },
+        { 
+            id: 8, 
+            nombre: "Corazón 1", 
+            imagen: "corazon-1.jpg", 
+            descripcion: "Perfecta para compartir en pareja. Presentación romántica con cerezas al marrasquino y una selección equilibrada de fiambres y quesos.",
+            ingredientes: "Jamón cocido natural, queso en barra, jamón crudo, queso pategrás, aceitunas verdes rellenas, cerezas al marrasquino.", 
+            precios: { "Único (2 pers)": 21499.99 } 
+        },
+        { 
+            id: 9, 
+            nombre: "Corazón 2", 
+            imagen: "corazon-2.jpg", 
+            descripcion: "La opción íntima con un toque gourmet. Lomo ahumado y aceitunas premium en formato ideal para dos personas.",
+            ingredientes: "Salamín picado fino, lomo ahumado, queso en barra, queso pategras, aceitunas verdes y negras súper.", 
+            precios: { "Único (2 pers)": 22499.99 } 
+        }
     ];
 
     let selectedPicada = null;
@@ -487,7 +558,8 @@
             <img src="${p.imagen}" alt="${p.nombre}" class="picada-image">
             <div class="picada-info">
                 <h3>${p.nombre}</h3>
-                <div class="price-preview">Desde $${minPrice.toLocaleString('es-AR')}</div>
+                <p class="picada-description">${p.descripcion}</p>
+                <div class="price-preview">Desde ${minPrice.toLocaleString('es-AR')}</div>
             </div>
         `;
         card.onclick = () => selectPicada(p, card);
@@ -569,7 +641,7 @@
 
         const dateFormatted = date ? new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'No especificado';
         
-        const mensaje = `Hola Estancia San Francisco! 👋%0A%0AQuiero encargar:%0A🥩 *${selectedPicada.nombre}*%0A📏 Tamaño: *${size}*%0A📅 Para: *${dateFormatted}*%0A💰 Total: *$${price.toLocaleString('es-AR')}*%0A%0A¡Gracias!`;
+        const mensaje = `Hola Estancia San Francisco! 👋%0A%0AQuiero encargar:%0A *${selectedPicada.nombre}*%0A📏 Tamaño: *${size}*%0A📅 Para: *${dateFormatted}*%0A💰 Total: *$${price.toLocaleString('es-AR')}*%0A%0A¡Gracias!`;
         btn.href = `https://wa.me/${phone}?text=${mensaje}`;
     }
 
