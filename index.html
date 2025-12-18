@@ -7,219 +7,585 @@
     <style>
         :root {
             --bordo: #800020;
+            --bordo-dark: #5a0017;
             --dorado: #c5a059;
             --crema: #fdfaf5;
             --blanco: #ffffff;
             --verde-wa: #25d366;
+            --sombra: rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--crema);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--crema) 0%, #f5f0e8 100%);
+            color: #333;
             margin: 0;
             padding-bottom: 120px;
-            color: #333;
+            line-height: 1.6;
         }
 
         header {
-            background: linear-gradient(135deg, var(--bordo), #5a0017);
+            background: linear-gradient(135deg, var(--bordo) 0%, var(--bordo-dark) 100%);
             color: white;
             text-align: center;
-            padding: 25px;
+            padding: 30px 20px;
             border-bottom: 4px solid var(--dorado);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
-        .container { max-width: 600px; margin: auto; padding: 20px; }
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
 
-        h2 { color: var(--bordo); font-size: 1.4rem; margin-left: 10px; }
+        header p {
+            margin: 10px 0 0;
+            opacity: 0.95;
+            font-size: 1.1rem;
+        }
 
-        /* SCROLL LATERAL */
-        .carousel-container {
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        h2 {
+            color: var(--bordo);
+            border-bottom: 3px solid var(--dorado);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
             display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 20px;
-            padding: 10px 20px 25px;
-            scrollbar-width: none; /* Ocultar scroll en Firefox */
+            align-items: center;
+            gap: 10px;
         }
 
-        .carousel-container::-webkit-scrollbar { display: none; } /* Ocultar scroll en Chrome/Safari */
+        .step-number {
+            background: var(--dorado);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Carrusel de Picadas */
+        .carousel-container {
+            position: relative;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 20px 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--dorado) var(--crema);
+        }
+
+        .carousel-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .carousel-wrapper::-webkit-scrollbar-track {
+            background: var(--crema);
+            border-radius: 10px;
+        }
+
+        .carousel-wrapper::-webkit-scrollbar-thumb {
+            background: var(--dorado);
+            border-radius: 10px;
+        }
+
+        .carousel-wrapper::-webkit-scrollbar-thumb:hover {
+            background: var(--bordo);
+        }
 
         .picada-card {
-            flex: 0 0 85%; /* La card ocupa el 85% del ancho para que se vea la siguiente */
-            scroll-snap-align: center;
             background: var(--blanco);
+            border: 3px solid #e0e0e0;
             border-radius: 20px;
+            min-width: 320px;
+            max-width: 320px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px var(--sombra);
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border: 2px solid transparent;
-            transition: 0.3s;
+            flex-shrink: 0;
+        }
+
+        .picada-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(197,160,89,0.3), transparent);
+            transition: left 0.6s;
+            z-index: 1;
+        }
+
+        .picada-card:hover::before {
+            left: 100%;
+        }
+
+        .picada-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(128,0,32,0.25);
+            border-color: var(--dorado);
         }
 
         .picada-card.selected {
             border-color: var(--bordo);
-            transform: scale(1.02);
-            box-shadow: 0 10px 30px rgba(128,0,32,0.2);
+            border-width: 4px;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(128,0,32,0.35);
         }
 
-        .picada-card img {
+        .picada-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--bordo);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 24px;
+            z-index: 2;
+            animation: checkmark 0.4s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(0) rotate(-180deg); }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+
+        .picada-image {
             width: 100%;
             height: 280px;
             object-fit: cover;
+            border-radius: 15px 15px 0 0;
         }
 
-        .card-info { padding: 15px; text-align: center; }
-        .card-info h4 { margin: 5px 0; font-size: 1.3rem; color: var(--bordo); }
+        .picada-info {
+            padding: 20px;
+            text-align: center;
+        }
 
-        /* FORMULARIO */
+        .picada-card h3 {
+            margin: 0 0 10px;
+            color: var(--bordo);
+            font-size: 1.4rem;
+        }
+
+        .price-preview {
+            font-size: 1.1rem;
+            color: var(--dorado);
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .scroll-hint {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* Navegación del carrusel */
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-dot.active {
+            background: var(--bordo);
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        /* Formulario de Opciones */
         .options-section {
             background: white;
-            margin: 20px;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px var(--sombra);
+            margin-top: 30px;
             display: none;
-            animation: fadeIn 0.5s;
+            animation: slideIn 0.4s ease;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--bordo); }
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--bordo);
+            font-size: 1.05rem;
+        }
+
         select, input {
-            width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1rem;
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
         }
 
-        .capacity-badge {
-            background: #fff3cd; color: #856404; padding: 10px;
-            border-radius: 10px; font-size: 0.9rem; margin-top: 10px;
-            border-left: 5px solid #ffc107;
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--bordo);
+            box-shadow: 0 0 0 3px rgba(128,0,32,0.1);
         }
 
-        .price-tag {
-            font-size: 2.2rem; font-weight: bold; color: var(--bordo);
-            text-align: center; margin: 20px 0;
+        select:hover, input:hover {
+            border-color: var(--dorado);
         }
 
-        .btn-wa {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--verde-wa); color: white; padding: 18px 40px;
-            border-radius: 50px; text-decoration: none; font-weight: bold;
-            box-shadow: 0 5px 20px rgba(37,211,102,0.4); z-index: 100;
-            display: none; width: 80%; text-align: center;
+        .info-box {
+            font-size: 0.95rem;
+            background: linear-gradient(135deg, #f8f8f8 0%, #efefef 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid var(--dorado);
+            line-height: 1.6;
+        }
+
+        .price-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--bordo);
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+            border-radius: 10px;
+            border: 2px solid var(--dorado);
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* Botón WhatsApp */
+        .btn-order {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--verde-wa) 0%, #20b358 100%);
+            color: white;
+            padding: 18px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 6px 20px rgba(37,211,102,0.4);
+            display: none;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .btn-order::before {
+            content: '💬';
+            font-size: 1.3rem;
+            margin-right: 8px;
+        }
+
+        .btn-order:hover {
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37,211,102,0.5);
+            background: linear-gradient(135deg, #20b358 0%, var(--verde-wa) 100%);
+        }
+
+        .btn-order:active {
+            transform: translateX(-50%) translateY(-1px);
+        }
+
+        .alert {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            header p { font-size: 1rem; }
+            
+            h2 { font-size: 1.5rem; }
+            
+            .picada-card {
+                min-width: 280px;
+                max-width: 280px;
+            }
+
+            .picada-image { height: 240px; }
+            
+            .options-section { padding: 20px; }
+            
+            .price-display { font-size: 2rem; }
+            
+            .btn-order {
+                padding: 15px 25px;
+                font-size: 1rem;
+                bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 20px 15px; }
+            
+            .picada-card {
+                min-width: 260px;
+                max-width: 260px;
+            }
+
+            .picada-image { height: 220px; }
+
+            .picada-card h3 { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Estancia San Francisco</h1>
-    <p>Elegí tu picada favorita</p>
+    <h1>🥩 Estancia San Francisco</h1>
+    <p>Armá tu pedido de picada premium</p>
 </header>
 
-<div style="margin-top: 20px;">
-    <h2>1. Deslizá y seleccioná</h2>
-    <div id="picadas-container" class="carousel-container"></div>
-</div>
-
 <div class="container">
+    <h2><span class="step-number">1</span> Seleccioná tu Picada</h2>
+    <p class="scroll-hint">← Deslizá para ver todas las opciones →</p>
+    
+    <div class="carousel-container">
+        <div id="carousel" class="carousel-wrapper"></div>
+        <div id="carousel-nav" class="carousel-nav"></div>
+    </div>
+
+    <div id="alert-select" class="alert">
+        ⚠️ Por favor, seleccioná una picada para continuar
+    </div>
+
     <div id="section-options" class="options-section">
-        <h2 id="selected-title" style="margin:0 0 15px 0; border-bottom: 2px solid var(--dorado);"></h2>
-        
-        <div class="form-group">
-            <label>🍽️ Tamaño:</label>
+        <h2><span class="step-number">2</span> <span id="selected-title">Detalles del Pedido</span></h2>
+        <p id="selected-ingredients" class="info-box"></p>
+
+        <div class="form-group" id="size-group">
+            <label for="size-select">🍽️ Elegí el tamaño:</label>
             <select id="size-select" onchange="updateSummary()"></select>
-            <div id="capacity-info" class="capacity-badge">
-                <span id="capacity-text"></span>
-            </div>
         </div>
 
         <div class="form-group">
-            <label>📅 Fecha de entrega:</label>
+            <label for="delivery-date">📅 ¿Para cuándo la querés?</label>
             <input type="date" id="delivery-date" onchange="updateSummary()">
         </div>
 
-        <div id="price-display" class="price-tag"></div>
+        <div id="price-display" class="price-display"></div>
     </div>
 </div>
 
-<a href="#" id="whatsapp-btn" class="btn-wa" target="_blank">Confirmar Pedido</a>
+<a href="#" id="whatsapp-btn" class="btn-order" onclick="return validateOrder()">Pedir por WhatsApp</a>
 
 <script>
     const picadasData = [
-        { id: 6, nombre: "San Francisco", imagen: "san-francisco.jpg", precios: { "Chica": 34999.99, "Mediana": 46999.99, "Grande": 84999.99 } },
-        { id: 3, nombre: "Ibérica", imagen: "iberica.jpg", precios: { "Chica": 35999.99, "Mediana": 48999.99, "Grande": 89999.99 } },
-        { id: 1, nombre: "Tradicional", imagen: "tradicional.jpg", precios: { "Chica": 31999.99, "Mediana": 43999.99, "Grande": 80999.99 } },
-        { id: 5, nombre: "Italiana", imagen: "italiana.jpg", precios: { "Chica": 46999.99, "Mediana": 63999.99, "Grande": 119999.99 } },
-        { id: 7, nombre: "Criolla", imagen: "criolla.jpg", precios: { "Chica": 28999.99, "Mediana": 39999.99, "Grande": 69999.99 } },
-        { id: 2, nombre: "Chacarera", imagen: "chacarera.jpg", precios: { "Chica": 30999.99, "Mediana": 44999.99, "Grande": 85999.99 } },
-        { id: 4, nombre: "Tabla de Quesos", imagen: "quesos.jpg", precios: { "Chica": 35999.99, "Mediana": 49999.99, "Grande": 87999.99 } },
-        { id: 8, nombre: "Corazón 1", imagen: "corazon-1.jpg", precios: { "Único (2 pers)": 21499.99 } },
-        { id: 9, nombre: "Corazón 2", imagen: "corazon-2.jpg", precios: { "Único (2 pers)": 22499.99 } }
+        { id: 6, nombre: "San Francisco", imagen: "san-francisco.jpg", ingredientes: "Aceitunas verdes, tomates hidratados, mozzarella bocconcini, jamón cocido y crudo, pategrás, queso azul, salame Milán y criollo, lomo a las finas hierbas.", precios: { "Chica": 34999.99, "Mediana": 46999.99, "Grande": 84999.99 } },
+        { id: 3, nombre: "Ibérica", imagen: "iberica.jpg", ingredientes: "Aceitunas negras condimentadas, queso de cabra, jamón crudo serrano, salame milán español, candelario, queso pategrás, queso azul, jamón cocido natural, Bondiola Serrana.", precios: { "Chica": 35999.99, "Mediana": 48999.99, "Grande": 89999.99 } },
+        { id: 1, nombre: "Tradicional", imagen: "tradicional.jpg", ingredientes: "Aceitunas verdes rellenas, Lomo ahumado, queso fontina suizo La Paulina, queso Mar del plata de campo, queso azul, salame criollo, longaniza casera.", precios: { "Chica": 31999.99, "Mediana": 43999.99, "Grande": 80999.99 } },
+        { id: 5, nombre: "Italiana", imagen: "italiana.jpg", ingredientes: "Aceitunas verdes rellenas, tomates hidratados, mozzarella bocconcini, jamón natural, jamón crudo tipo parma, queso gruyere, mortadela con pistachos, sorpressatta, queso parmesano.", precios: { "Chica": 46999.99, "Mediana": 63999.99, "Grande": 119999.99 } },
+        { id: 7, nombre: "Criolla", imagen: "criolla.jpg", ingredientes: "Aceitunas, pepinitos, tomates hidratados, jamón cocido y crudo nacional, lomito ahumado, mortadela, queso fontina, Mar del Plata y salame criollo.", precios: { "Chica": 28999.99, "Mediana": 39999.99, "Grande": 69999.99 } },
+        { id: 2, nombre: "Chacarera", imagen: "chacarera.jpg", ingredientes: "Salamín picado fino, longaniza calabresa, queso saborizado, aceitunas negras, aceitunas verdes rellenas, queso pategrás, salame criollo.", precios: { "Chica": 30999.99, "Mediana": 44999.99, "Grande": 85999.99 } },
+        { id: 4, nombre: "Tabla de Quesos", imagen: "quesos.jpg", ingredientes: "Aceitunas verdes rellenas, pategrás, fontina suizo, taluhet, quesos saborizados, queso sardo, queso de cabra, gruyere, queso azul, queso Mar del Plata de campo.", precios: { "Chica": 35999.99, "Mediana": 49999.99, "Grande": 87999.99 } },
+        { id: 8, nombre: "Corazón 1", imagen: "corazon-1.jpg", ingredientes: "Jamón cocido natural, queso en barra, jamón crudo, queso pategrás, aceitunas verdes rellenas, cerezas al marrasquino.", precios: { "Único (2 pers)": 21499.99 } },
+        { id: 9, nombre: "Corazón 2", imagen: "corazon-2.jpg", ingredientes: "Salamín picado fino, lomo ahumado, queso en barra, queso pategras, aceitunas verdes y negras súper.", precios: { "Único (2 pers)": 22499.99 } }
     ];
 
-    const container = document.getElementById('picadas-container');
     let selectedPicada = null;
+    const phone = "5491173644584";
 
-    picadasData.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'picada-card';
-        div.innerHTML = `
-            <img src="${p.imagen}" alt="${p.nombre}">
-            <div class="card-info">
-                <h4>${p.nombre}</h4>
-                <small>Tocar para elegir</small>
+    // Configurar fecha mínima (hoy)
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('delivery-date').setAttribute('min', today);
+    document.getElementById('delivery-date').value = today;
+
+    // Renderizar carrusel
+    const carousel = document.getElementById('carousel');
+    const carouselNav = document.getElementById('carousel-nav');
+    
+    picadasData.forEach((p, index) => {
+        // Crear tarjeta
+        const card = document.createElement('div');
+        card.className = 'picada-card';
+        const minPrice = Math.min(...Object.values(p.precios));
+        card.innerHTML = `
+            <img src="${p.imagen}" alt="${p.nombre}" class="picada-image">
+            <div class="picada-info">
+                <h3>${p.nombre}</h3>
+                <div class="price-preview">Desde $${minPrice.toLocaleString('es-AR')}</div>
             </div>
         `;
-        div.onclick = () => {
-            selectedPicada = p;
-            document.querySelectorAll('.picada-card').forEach(c => c.classList.remove('selected'));
-            div.classList.add('selected');
-            setupOptions(p);
-        };
-        container.appendChild(div);
+        card.onclick = () => selectPicada(p, card);
+        carousel.appendChild(card);
+
+        // Crear punto de navegación
+        const dot = document.createElement('div');
+        dot.className = 'nav-dot';
+        if (index === 0) dot.classList.add('active');
+        dot.onclick = () => scrollToCard(index);
+        carouselNav.appendChild(dot);
     });
 
-    function setupOptions(p) {
-        const section = document.getElementById('section-options');
-        section.style.display = 'block';
-        document.getElementById('selected-title').innerText = p.nombre;
+    // Actualizar puntos de navegación al hacer scroll
+    carousel.addEventListener('scroll', () => {
+        const cards = carousel.querySelectorAll('.picada-card');
+        const dots = carouselNav.querySelectorAll('.nav-dot');
         
-        const select = document.getElementById('size-select');
-        select.innerHTML = '';
-        for (const s in p.precios) {
+        cards.forEach((card, index) => {
+            const rect = card.getBoundingClientRect();
+            const carouselRect = carousel.getBoundingClientRect();
+            
+            if (rect.left >= carouselRect.left && rect.left < carouselRect.left + carouselRect.width / 2) {
+                dots.forEach(d => d.classList.remove('active'));
+                dots[index].classList.add('active');
+            }
+        });
+    });
+
+    function scrollToCard(index) {
+        const cards = carousel.querySelectorAll('.picada-card');
+        cards[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
+    function selectPicada(picada, element) {
+        selectedPicada = picada;
+        document.querySelectorAll('.picada-card').forEach(c => c.classList.remove('selected'));
+        element.classList.add('selected');
+
+        // Ocultar alerta si estaba visible
+        document.getElementById('alert-select').style.display = 'none';
+
+        const optionsSection = document.getElementById('section-options');
+        optionsSection.style.display = 'block';
+        
+        // Scroll suave a las opciones
+        setTimeout(() => {
+            optionsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+
+        document.getElementById('selected-title').innerText = picada.nombre;
+        document.getElementById('selected-ingredients').innerHTML = `<strong>Incluye:</strong> ${picada.ingredientes}`;
+
+        const sizeSelect = document.getElementById('size-select');
+        sizeSelect.innerHTML = '';
+        for (const size in picada.precios) {
             const opt = document.createElement('option');
-            opt.value = s; opt.innerText = s;
-            select.appendChild(opt);
+            opt.value = size;
+            opt.innerText = `${size} - $${picada.precios[size].toLocaleString('es-AR')}`;
+            sizeSelect.appendChild(opt);
         }
         updateSummary();
-        section.scrollIntoView({ behavior: 'smooth' });
     }
 
     function updateSummary() {
         if (!selectedPicada) return;
+        
         const size = document.getElementById('size-select').value;
         const price = selectedPicada.precios[size];
-        const cap = document.getElementById('capacity-text');
+        const date = document.getElementById('delivery-date').value;
 
-        // Capacidades según fuente 
-        if (size === "Chica") cap.innerText = "Comen 2 / Pican 4 personas.";
-        else if (size === "Mediana") cap.innerText = "Comen 4 / Pican 6 personas.";
-        else if (size === "Grande") cap.innerText = "Comen 6 / Pican 12 personas.";
-        else cap.innerText = "Ideal para 2 personas.";
+        document.getElementById('price-display').innerHTML = `
+            <div style="font-size: 1rem; color: #666; font-weight: normal;">Total a pagar:</div>
+            $${price.toLocaleString('es-AR')}
+        `;
 
-        document.getElementById('price-display').innerText = `$${price.toLocaleString('es-AR')}`;
-        
         const btn = document.getElementById('whatsapp-btn');
         btn.style.display = 'block';
+
+        const dateFormatted = date ? new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'No especificado';
         
-        const date = document.getElementById('delivery-date').value;
-        const msg = `Hola! Quiero la picada *${selectedPicada.nombre}* en tamaño *${size}* para el día *${date || 'a convenir'}*. Total: *$${price}*`;
-        btn.href = `https://wa.me/5491173644584?text=${encodeURIComponent(msg)}`;
+        const mensaje = `Hola Estancia San Francisco! 👋%0A%0AQuiero encargar:%0A🥩 *${selectedPicada.nombre}*%0A📏 Tamaño: *${size}*%0A📅 Para: *${dateFormatted}*%0A💰 Total: *$${price.toLocaleString('es-AR')}*%0A%0A¡Gracias!`;
+        btn.href = `https://wa.me/${phone}?text=${mensaje}`;
     }
 
-    // Fecha mínima hoy
-    document.getElementById('delivery-date').valueAsDate = new Date();
+    function validateOrder() {
+        if (!selectedPicada) {
+            const alert = document.getElementById('alert-select');
+            alert.style.display = 'block';
+            alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 4000);
+            return false;
+        }
+        return true;
+    }
 </script>
+
 </body>
 </html>
