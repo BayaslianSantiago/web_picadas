@@ -15,9 +15,7 @@
             --sombra: rgba(0,0,0,0.1);
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -37,23 +35,10 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
+        header h1 { margin: 0; font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        header p { margin: 10px 0 0; opacity: 0.95; font-size: 1.1rem; }
 
-        header p {
-            margin: 10px 0 0;
-            opacity: 0.95;
-            font-size: 1.1rem;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 30px 20px;
-        }
+        .container { max-width: 900px; margin: auto; padding: 30px 20px; }
 
         h2 {
             color: var(--bordo);
@@ -100,21 +85,6 @@
             overflow: hidden;
         }
 
-        .picada-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(197,160,89,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .picada-card:hover::before {
-            left: 100%;
-        }
-
         .picada-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(128,0,32,0.2);
@@ -125,30 +95,6 @@
             border-color: var(--bordo);
             background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
             transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 8px 25px rgba(128,0,32,0.3);
-        }
-
-        .picada-card.selected::after {
-            content: '✓';
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--bordo);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-            animation: checkmark 0.3s ease;
-        }
-
-        @keyframes checkmark {
-            0% { transform: scale(0) rotate(-180deg); }
-            100% { transform: scale(1) rotate(0); }
         }
 
         .picada-card img {
@@ -158,18 +104,6 @@
             border-radius: 10px;
             margin-bottom: 10px;
             border: 2px solid var(--dorado);
-        }
-
-        .picada-card h4 {
-            margin: 10px 0 5px;
-            color: var(--bordo);
-            font-size: 1.1rem;
-        }
-
-        .price-preview {
-            font-size: 0.85rem;
-            color: #666;
-            font-weight: 500;
         }
 
         /* Formulario de Opciones */
@@ -183,28 +117,10 @@
             animation: slideIn 0.4s ease;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--bordo);
-            font-size: 1.05rem;
-        }
+        .form-group { margin-bottom: 25px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--bordo); }
 
         select, input {
             width: 100%;
@@ -212,26 +128,14 @@
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
-            transition: all 0.3s;
             font-family: inherit;
-        }
-
-        select:focus, input:focus {
-            outline: none;
-            border-color: var(--bordo);
-            box-shadow: 0 0 0 3px rgba(128,0,32,0.1);
-        }
-
-        select:hover, input:hover {
-            border-color: var(--dorado);
         }
 
         .info-box {
             font-size: 0.95rem;
-            background: linear-gradient(135deg, #f8f8f8 0%, #efefef 100%);
+            background: #f8f8f8;
             padding: 15px;
             border-radius: 8px;
-            margin-top: 10px;
             border-left: 4px solid var(--dorado);
             line-height: 1.6;
         }
@@ -243,18 +147,11 @@
             text-align: center;
             margin: 30px 0;
             padding: 20px;
-            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+            background: #fff5f5;
             border-radius: 10px;
             border: 2px solid var(--dorado);
-            animation: pulse 2s ease infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
-        /* Botón WhatsApp */
         .btn-order {
             position: fixed;
             bottom: 20px;
@@ -266,72 +163,21 @@
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 1.1rem;
-            box-shadow: 0 6px 20px rgba(37,211,102,0.4);
             display: none;
             z-index: 1000;
-            transition: all 0.3s ease;
-            gap: 10px;
+            box-shadow: 0 6px 20px rgba(37,211,102,0.4);
             align-items: center;
+            gap: 10px;
         }
 
-        .btn-order::before {
-            content: '💬';
-            font-size: 1.3rem;
-        }
-
-        .btn-order:hover {
-            transform: translateX(-50%) translateY(-3px);
-            box-shadow: 0 8px 25px rgba(37,211,102,0.5);
-            background: linear-gradient(135deg, #20b358 0%, var(--verde-wa) 100%);
-        }
-
-        .btn-order:active {
-            transform: translateX(-50%) translateY(-1px);
-        }
-
-        .alert {
+        .capacity-alert {
+            margin-top: 10px;
             background: #fff3cd;
-            border: 2px solid #ffc107;
             color: #856404;
-            padding: 15px;
+            padding: 10px;
             border-radius: 8px;
-            margin: 20px 0;
-            display: none;
-            animation: slideIn 0.3s ease;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            header h1 { font-size: 1.8rem; }
-            header p { font-size: 1rem; }
-            
-            .picadas-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 15px;
-            }
-
-            h2 { font-size: 1.5rem; }
-            
-            .options-section { padding: 20px; }
-            
-            .price-display { font-size: 2rem; }
-            
-            .btn-order {
-                padding: 15px 25px;
-                font-size: 1rem;
-                bottom: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container { padding: 20px 15px; }
-            
-            .picadas-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            }
-
-            .picada-card img { height: 110px; }
+            font-size: 0.9rem;
+            border-left: 4px solid #ffc107;
         }
     </style>
 </head>
@@ -346,17 +192,16 @@
     <h2><span class="step-number">1</span> Seleccioná tu Picada</h2>
     <div id="picadas-container" class="picadas-grid"></div>
 
-    <div id="alert-select" class="alert">
-        ⚠️ Por favor, seleccioná una picada para continuar
-    </div>
-
     <div id="section-options" class="options-section">
         <h2><span class="step-number">2</span> <span id="selected-title">Detalles del Pedido</span></h2>
         <p id="selected-ingredients" class="info-box"></p>
 
-        <div class="form-group" id="size-group">
+        <div class="form-group">
             <label for="size-select">🍽️ Elegí el tamaño:</label>
             <select id="size-select" onchange="updateSummary()"></select>
+            <div id="capacity-info" class="capacity-alert">
+                <span id="capacity-text"></span>
+            </div>
         </div>
 
         <div class="form-group">
@@ -368,40 +213,35 @@
     </div>
 </div>
 
-<a href="#" id="whatsapp-btn" class="btn-order" onclick="return validateOrder()">Pedir por WhatsApp</a>
+<a href="#" id="whatsapp-btn" class="btn-order" target="_blank">💬 Pedir por WhatsApp</a>
 
 <script>
     const picadasData = [
-        { id: 6, nombre: "San Francisco", imagen: "san-francisco.jpg", ingredientes: "Aceitunas verdes, tomates hidratados, mozzarella bocconcini, jamón cocido y crudo, pategrás, queso azul, salame Milán y criollo, lomo a las finas hierbas.", precios: { "Chica": 34999.99, "Mediana": 46999.99, "Grande": 84999.99 } },
-        { id: 3, nombre: "Ibérica", imagen: "iberica.jpg", ingredientes: "Aceitunas negras condimentadas, queso de cabra, jamón crudo serrano, salame milán español, candelario, queso pategrás, queso azul, jamón cocido natural, Bondiola Serrana.", precios: { "Chica": 35999.99, "Mediana": 48999.99, "Grande": 89999.99 } },
-        { id: 1, nombre: "Tradicional", imagen: "tradicional.jpg", ingredientes: "Aceitunas verdes rellenas, Lomo ahumado, queso fontina suizo La Paulina, queso Mar del plata de campo, queso azul, salame criollo, longaniza casera.", precios: { "Chica": 31999.99, "Mediana": 43999.99, "Grande": 80999.99 } },
-        { id: 5, nombre: "Italiana", imagen: "italiana.jpg", ingredientes: "Aceitunas verdes rellenas, tomates hidratados, mozzarella bocconcini, jamón natural, jamón crudo tipo parma, queso gruyere, mortadela con pistachos, sorpressatta, queso parmesano.", precios: { "Chica": 46999.99, "Mediana": 63999.99, "Grande": 119999.99 } },
-        { id: 7, nombre: "Criolla", imagen: "criolla.jpg", ingredientes: "Aceitunas, pepinitos, tomates hidratados, jamón cocido y crudo nacional, lomito ahumado, mortadela, queso fontina, Mar del Plata y salame criollo.", precios: { "Chica": 28999.99, "Mediana": 39999.99, "Grande": 69999.99 } },
-        { id: 2, nombre: "Chacarera", imagen: "chacarera.jpg", ingredientes: "Salamín picado fino, longaniza calabresa, queso saborizado, aceitunas negras, aceitunas verdes rellenas, queso pategrás, salame criollo.", precios: { "Chica": 30999.99, "Mediana": 44999.99, "Grande": 85999.99 } },
-        { id: 4, nombre: "Tabla de Quesos", imagen: "quesos.jpg", ingredientes: "Aceitunas verdes rellenas, pategrás, fontina suizo, taluhet, quesos saborizados, queso sardo, queso de cabra, gruyere, queso azul, queso Mar del Plata de campo.", precios: { "Chica": 35999.99, "Mediana": 49999.99, "Grande": 87999.99 } },
-        { id: 8, nombre: "Corazón 1", imagen: "corazon-1.jpg", ingredientes: "Jamón cocido natural, queso en barra, jamón crudo, queso pategrás, aceitunas verdes rellenas, cerezas al marrasquino.", precios: { "Único (2 pers)": 21499.99 } },
-        { id: 9, nombre: "Corazón 2", imagen: "corazon-2.jpg", ingredientes: "Salamín picado fino, lomo ahumado, queso en barra, queso pategras, aceitunas verdes y negras súper.", precios: { "Único (2 pers)": 22499.99 } }
+        { id: 6, nombre: "San Francisco", imagen: "san-francisco.jpg", ingredientes: "Aceitunas verdes rellenas, aceitunas negras condimentadas, tomates hidratados en aceite de oliva, mozzarella bocconcini, jamón cocido natural, jamón crudo tipo parma, pategrás La Paulina, queso azul, queso taluhet, salame Milán especial, salame criollo, lomo horneado a las finas hierbas, queso saborizado. [cite: 7]", precios: { "Chica": 34999.99, "Mediana": 46999.99, "Grande": 84999.99 } },
+        { id: 3, nombre: "Ibérica", imagen: "iberica.jpg", ingredientes: "Aceitunas negras condimentadas, aceitunas verdes, queso de cabra, jamón crudo serrano, salame milán español, candelario, queso pategrás, queso azul, jamón cocido natural, Bondiola Serrana, jamón crudo deshuesado serrano. [cite: 4]", precios: { "Chica": 35999.99, "Mediana": 48999.99, "Grande": 89999.99 } },
+        { id: 1, nombre: "Tradicional", imagen: "tradicional.jpg", ingredientes: "Aceitunas verdes rellenas, Lomo ahumado, queso fontina suizo La Paulina, queso Mar del plata de campo, queso azul, salame criollo, longaniza casera. [cite: 2]", precios: { "Chica": 31999.99, "Mediana": 43999.99, "Grande": 80999.99 } },
+        { id: 5, nombre: "Italiana", imagen: "italiana.jpg", ingredientes: "Aceitunas verdes rellenas, aceitunas negras condimentadas, tomates hidratados en aceite de oliva, mozzarella bocconcini, jamón natural, jamón crudo tipo parma, queso gruyere, mortadela con pistachos, sorpressatta, queso parmesano, longaniza calabresa, queso saborizado, queso de oveja. ", precios: { "Chica": 46999.99, "Mediana": 63999.99, "Grande": 119999.99 } },
+        { id: 7, nombre: "Criolla", imagen: "criolla.jpg", ingredientes: "Aceitunas negras, pepinitos en vinagre, aceitunas verdes, tomates hidratados en aceite de oliva, jamón cocido natural, jamón crudo nacional seleccionado, lomito ahumado, mortadela primera selección, queso fontina, queso Mar del Plata de campo, salame criollo. ", precios: { "Chica": 28999.99, "Mediana": 39999.99, "Grande": 69999.99 } },
+        { id: 2, nombre: "Chacarera", imagen: "chacarera.jpg", ingredientes: "Salamín picado fino, longaniza calabresa, queso saborizado, aceitunas negras, aceitunas verdes rellenas, queso pategrás, salame criollo. [cite: 3]", precios: { "Chica": 30999.99, "Mediana": 44999.99, "Grande": 85999.99 } },
+        { id: 4, nombre: "Tabla de Quesos", imagen: "quesos.jpg", ingredientes: "Aceitunas verdes rellenas, pategrás, fontina suizo, taluhet, quesos saborizados, queso sardo, queso de cabra, gruyere, queso azul, queso Mar del Plata de campo. [cite: 5]", precios: { "Chica": 35999.99, "Mediana": 49999.99, "Grande": 87999.99 } },
+        { id: 8, nombre: "Corazón 1", imagen: "corazon-1.jpg", ingredientes: "Jamón cocido natural, queso en barra La Paulina, jamón crudo, queso pategrás La Paulina, aceitunas verdes rellenas, cerezas al marrasquino. [cite: 9]", precios: { "Único (2 pers)": 21499.99 } },
+        { id: 9, nombre: "Corazón 2", imagen: "corazon-2.jpg", ingredientes: "Salamín picado fino, lomo ahumado, queso en barra La Paulina, queso pategras La Paulina, aceitunas verdes, aceitunas negras súper. [cite: 10]", precios: { "Único (2 pers)": 22499.99 } }
     ];
 
-    let selectedPicada = null;
     const phone = "5491173644584";
+    let selectedPicada = null;
 
-    // Configurar fecha mínima (hoy)
+    // Inicializar fecha
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('delivery-date').setAttribute('min', today);
     document.getElementById('delivery-date').value = today;
 
-    // Renderizar picadas
+    // Renderizado
     const container = document.getElementById('picadas-container');
     picadasData.forEach(p => {
         const div = document.createElement('div');
         div.className = 'picada-card';
-        const minPrice = Math.min(...Object.values(p.precios));
-        div.innerHTML = `
-            <img src="${p.imagen}" alt="${p.nombre}">
-            <h4>${p.nombre}</h4>
-            <div class="price-preview">Desde ${minPrice.toLocaleString('es-AR')}</div>
-        `;
+        div.innerHTML = `<img src="${p.imagen}" alt="${p.nombre}"><h4>${p.nombre}</h4>`;
         div.onclick = () => selectPicada(p, div);
         container.appendChild(div);
     });
@@ -411,17 +251,7 @@
         document.querySelectorAll('.picada-card').forEach(c => c.classList.remove('selected'));
         element.classList.add('selected');
 
-        // Ocultar alerta si estaba visible
-        document.getElementById('alert-select').style.display = 'none';
-
-        const optionsSection = document.getElementById('section-options');
-        optionsSection.style.display = 'block';
-        
-        // Scroll suave a las opciones
-        setTimeout(() => {
-            optionsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 100);
-
+        document.getElementById('section-options').style.display = 'block';
         document.getElementById('selected-title').innerText = picada.nombre;
         document.getElementById('selected-ingredients').innerHTML = `<strong>Incluye:</strong> ${picada.ingredientes}`;
 
@@ -438,38 +268,26 @@
 
     function updateSummary() {
         if (!selectedPicada) return;
-        
         const size = document.getElementById('size-select').value;
         const price = selectedPicada.precios[size];
         const date = document.getElementById('delivery-date').value;
+        const capText = document.getElementById('capacity-text');
 
-        document.getElementById('price-display').innerHTML = `
-            <div style="font-size: 1rem; color: #666; font-weight: normal;">Total a pagar:</div>
-            $${price.toLocaleString('es-AR')}
-        `;
+        // Lógica de capacidades 
+        if (size === "Chica") capText.innerText = "Comen 2 / Pican 4 personas.";
+        else if (size === "Mediana") capText.innerText = "Comen 4 / Pican 6 personas.";
+        else if (size === "Grande") capText.innerText = "Comen 6 / Pican 12 personas.";
+        else capText.innerText = "Ideal para 2 personas.";
 
+        document.getElementById('price-display').innerHTML = `<small style="font-size:1rem; display:block">Total:</small> $${price.toLocaleString('es-AR')}`;
+        
         const btn = document.getElementById('whatsapp-btn');
         btn.style.display = 'flex';
-
-        const dateFormatted = date ? new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'No especificado';
         
-        const mensaje = `Hola Estancia San Francisco! 👋%0A%0AQuiero encargar:%0A *${selectedPicada.nombre}*%0A📏 Tamaño: *${size}*%0A📅 Para: *${dateFormatted}*%0A💰 Total: *$${price.toLocaleString('es-AR')}*%0A%0A¡Gracias!`;
+        const dateF = new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' });
+        const mensaje = `Hola! Quiero encargar:*${selectedPicada.nombre}*%0A📏 Tamaño: *${size}*%0A📅 Para el: *${dateF}*%0A💰 Total: *$${price.toLocaleString('es-AR')}*`;
         btn.href = `https://wa.me/${phone}?text=${mensaje}`;
     }
-
-    function validateOrder() {
-        if (!selectedPicada) {
-            const alert = document.getElementById('alert-select');
-            alert.style.display = 'block';
-            alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 4000);
-            return false;
-        }
-        return true;
-    }
 </script>
-
 </body>
 </html>
