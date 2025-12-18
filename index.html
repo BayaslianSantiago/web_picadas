@@ -318,6 +318,22 @@
             line-height: 1.6;
         }
 
+        .size-info {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid #4caf50;
+            font-size: 0.95rem;
+            color: #2e7d32;
+            font-weight: 500;
+            display: none;
+        }
+
+        .size-info strong {
+            color: #1b5e20;
+        }
+
         .price-display {
             font-size: 2.5rem;
             font-weight: bold;
@@ -424,7 +440,7 @@
 <body>
 
 <header>
-    <h1>Estancia San Francisco</h1>
+    <h1>🥩 Estancia San Francisco</h1>
     <p>Armá tu pedido de picada premium</p>
 </header>
 
@@ -448,6 +464,7 @@
         <div class="form-group" id="size-group">
             <label for="size-select">🍽️ Elegí el tamaño:</label>
             <select id="size-select" onchange="updateSummary()"></select>
+            <div id="size-info" class="size-info"></div>
         </div>
 
         <div class="form-group">
@@ -531,7 +548,7 @@
             id: 9, 
             nombre: "Corazón 2", 
             imagen: "corazon-2.jpg", 
-            descripcion: "Combinación perfecta con un toque gourmet. Lomo ahumado y aceitunas premium en formato ideal para dos personas.",
+            descripcion: "La opción íntima con un toque gourmet. Lomo ahumado y aceitunas premium en formato ideal para dos personas.",
             ingredientes: "Salamín picado fino, lomo ahumado, queso en barra, queso pategras, aceitunas verdes y negras súper.", 
             precios: { "Único (2 pers)": 22499.99 } 
         }
@@ -631,9 +648,25 @@
         const price = selectedPicada.precios[size];
         const date = document.getElementById('delivery-date').value;
 
+        // Mostrar información del tamaño
+        const sizeInfo = document.getElementById('size-info');
+        sizeInfo.style.display = 'block';
+        
+        let sizeText = '';
+        if (size === 'Chica') {
+            sizeText = '👥 <strong>Comen 2</strong> / Pican 4 personas';
+        } else if (size === 'Mediana') {
+            sizeText = '👥 <strong>Comen 4</strong> / Pican 6 personas';
+        } else if (size === 'Grande') {
+            sizeText = '👥 <strong>Comen 6</strong> / Pican 12 personas';
+        } else if (size.includes('Único')) {
+            sizeText = '👥 <strong>Tamaño único</strong> para 2 personas';
+        }
+        sizeInfo.innerHTML = sizeText;
+
         document.getElementById('price-display').innerHTML = `
             <div style="font-size: 1rem; color: #666; font-weight: normal;">Total a pagar:</div>
-            $${price.toLocaleString('es-AR')}
+            ${price.toLocaleString('es-AR')}
         `;
 
         const btn = document.getElementById('whatsapp-btn');
@@ -641,7 +674,7 @@
 
         const dateFormatted = date ? new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'No especificado';
         
-        const mensaje = `Hola Estancia San Francisco! 👋%0A%0AQuiero encargar:%0A *${selectedPicada.nombre}*%0A📏 Tamaño: *${size}*%0A📅 Para: *${dateFormatted}*%0A💰 Total: *$${price.toLocaleString('es-AR')}*%0A%0A¡Gracias!`;
+        const mensaje = `Hola Estancia San Francisco! 👋%0A%0AQuiero encargar:%0A🥩 *${selectedPicada.nombre}*%0A📏 Tamaño: *${size}*%0A📅 Para: *${dateFormatted}*%0A💰 Total: *${price.toLocaleString('es-AR')}*%0A%0A¡Gracias!`;
         btn.href = `https://wa.me/${phone}?text=${mensaje}`;
     }
 
