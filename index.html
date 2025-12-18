@@ -151,16 +151,12 @@
             100% { transform: scale(1) rotate(0); }
         }
 
-        .picada-image {
+        .picada-card img {
             width: 100%;
             height: 140px;
+            object-fit: cover;
             border-radius: 10px;
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            background: linear-gradient(135deg, #f0e6d2 0%, #d4c4a8 100%);
             border: 2px solid var(--dorado);
         }
 
@@ -335,15 +331,15 @@
                 grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             }
 
-            .picada-image { height: 110px; font-size: 2.5rem; }
+            .picada-card img { height: 110px; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>🥩 Estancia San Francisco</h1>
-    <p>Armá tu pedido de picada premium</p>
+    <h1>Estancia San Francisco</h1>
+    <p>Armá tu pedido de Picada Premium</p>
 </header>
 
 <div class="container">
@@ -376,15 +372,15 @@
 
 <script>
     const picadasData = [
-        { id: 1, nombre: "Tradicional", icon: "🧀", ingredientes: "Aceitunas verdes rellenas, Lomo ahumado, queso fontina suizo La Paulina, queso Mar del plata de campo, queso azul, salame criollo, longaniza casera.", precios: { "Chica": 31999.99, "Mediana": 43999.99, "Grande": 80999.99 } },
-        { id: 2, nombre: "Chacarera", icon: "🌾", ingredientes: "Salamín picado fino, longaniza calabresa, queso saborizado, aceitunas negras, aceitunas verdes rellenas, queso pategrás, salame criollo.", precios: { "Chica": 30999.99, "Mediana": 44999.99, "Grande": 85999.99 } },
-        { id: 3, nombre: "Ibérica", icon: "🇪🇸", ingredientes: "Aceitunas negras condimentadas, queso de cabra, jamón crudo serrano, salame milán español, candelario, queso pategrás, queso azul, jamón cocido natural, Bondiola Serrana.", precios: { "Chica": 35999.99, "Mediana": 48999.99, "Grande": 89999.99 } },
-        { id: 4, nombre: "Tabla de Quesos", icon: "🧈", ingredientes: "Aceitunas verdes rellenas, pategrás, fontina suizo, taluhet, quesos saborizados, queso sardo, queso de cabra, gruyere, queso azul, queso Mar del Plata de campo.", precios: { "Chica": 35999.99, "Mediana": 49999.99, "Grande": 87999.99 } },
-        { id: 5, nombre: "Italiana", icon: "🇮🇹", ingredientes: "Aceitunas verdes rellenas, tomates hidratados, mozzarella bocconcini, jamón natural, jamón crudo tipo parma, queso gruyere, mortadela con pistachos, sorpressatta, queso parmesano.", precios: { "Chica": 46999.99, "Mediana": 63999.99, "Grande": 119999.99 } },
-        { id: 6, nombre: "San Francisco", icon: "⭐", ingredientes: "Aceitunas verdes, tomates hidratados, mozzarella bocconcini, jamón cocido y crudo, pategrás, queso azul, salame Milán y criollo, lomo a las finas hierbas.", precios: { "Chica": 34999.99, "Mediana": 46999.99, "Grande": 84999.99 } },
-        { id: 7, nombre: "Criolla", icon: "🇦🇷", ingredientes: "Aceitunas, pepinitos, tomates hidratados, jamón cocido y crudo nacional, lomito ahumado, mortadela, queso fontina, Mar del Plata y salame criollo.", precios: { "Chica": 28999.99, "Mediana": 39999.99, "Grande": 69999.99 } },
-        { id: 8, nombre: "Corazón 1", icon: "❤️", ingredientes: "Jamón cocido natural, queso en barra, jamón crudo, queso pategrás, aceitunas verdes rellenas, cerezas al marrasquino.", precios: { "Único (2 pers)": 21499.99 } },
-        { id: 9, nombre: "Corazón 2", icon: "💕", ingredientes: "Salamín picado fino, lomo ahumado, queso en barra, queso pategras, aceitunas verdes y negras súper.", precios: { "Único (2 pers)": 22499.99 } }
+        { id: 6, nombre: "San Francisco", imagen: "san-francisco.jpg", ingredientes: "Aceitunas verdes, tomates hidratados, mozzarella bocconcini, jamón cocido y crudo, pategrás, queso azul, salame Milán y criollo, lomo a las finas hierbas.", precios: { "Chica": 34999.99, "Mediana": 46999.99, "Grande": 84999.99 } },
+        { id: 3, nombre: "Ibérica", imagen: "iberica.jpg", ingredientes: "Aceitunas negras condimentadas, queso de cabra, jamón crudo serrano, salame milán español, candelario, queso pategrás, queso azul, jamón cocido natural, Bondiola Serrana.", precios: { "Chica": 35999.99, "Mediana": 48999.99, "Grande": 89999.99 } },
+        { id: 1, nombre: "Tradicional", imagen: "tradicional.jpg", ingredientes: "Aceitunas verdes rellenas, Lomo ahumado, queso fontina suizo La Paulina, queso Mar del plata de campo, queso azul, salame criollo, longaniza casera.", precios: { "Chica": 31999.99, "Mediana": 43999.99, "Grande": 80999.99 } },
+        { id: 5, nombre: "Italiana", imagen: "italiana.jpg", ingredientes: "Aceitunas verdes rellenas, tomates hidratados, mozzarella bocconcini, jamón natural, jamón crudo tipo parma, queso gruyere, mortadela con pistachos, sorpressatta, queso parmesano.", precios: { "Chica": 46999.99, "Mediana": 63999.99, "Grande": 119999.99 } },
+        { id: 7, nombre: "Criolla", imagen: "criolla.jpg", ingredientes: "Aceitunas, pepinitos, tomates hidratados, jamón cocido y crudo nacional, lomito ahumado, mortadela, queso fontina, Mar del Plata y salame criollo.", precios: { "Chica": 28999.99, "Mediana": 39999.99, "Grande": 69999.99 } },
+        { id: 2, nombre: "Chacarera", imagen: "chacarera.jpg", ingredientes: "Salamín picado fino, longaniza calabresa, queso saborizado, aceitunas negras, aceitunas verdes rellenas, queso pategrás, salame criollo.", precios: { "Chica": 30999.99, "Mediana": 44999.99, "Grande": 85999.99 } },
+        { id: 4, nombre: "Tabla de Quesos", imagen: "quesos.jpg", ingredientes: "Aceitunas verdes rellenas, pategrás, fontina suizo, taluhet, quesos saborizados, queso sardo, queso de cabra, gruyere, queso azul, queso Mar del Plata de campo.", precios: { "Chica": 35999.99, "Mediana": 49999.99, "Grande": 87999.99 } },
+        { id: 8, nombre: "Corazón 1", imagen: "corazon-1.jpg", ingredientes: "Jamón cocido natural, queso en barra, jamón crudo, queso pategrás, aceitunas verdes rellenas, cerezas al marrasquino.", precios: { "Único (2 pers)": 21499.99 } },
+        { id: 9, nombre: "Corazón 2", imagen: "corazon-2.jpg", ingredientes: "Salamín picado fino, lomo ahumado, queso en barra, queso pategras, aceitunas verdes y negras súper.", precios: { "Único (2 pers)": 22499.99 } }
     ];
 
     let selectedPicada = null;
@@ -402,9 +398,9 @@
         div.className = 'picada-card';
         const minPrice = Math.min(...Object.values(p.precios));
         div.innerHTML = `
-            <div class="picada-image">${p.icon}</div>
+            <img src="${p.imagen}" alt="${p.nombre}">
             <h4>${p.nombre}</h4>
-            <div class="price-preview">Desde $${minPrice.toLocaleString('es-AR')}</div>
+            <div class="price-preview">Desde ${minPrice.toLocaleString('es-AR')}</div>
         `;
         div.onclick = () => selectPicada(p, div);
         container.appendChild(div);
@@ -457,7 +453,7 @@
 
         const dateFormatted = date ? new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'No especificado';
         
-        const mensaje = `Hola Estancia San Francisco! 👋%0A%0AQuiero encargar:%0A🥩 *${selectedPicada.nombre}*%0A📏 Tamaño: *${size}*%0A📅 Para: *${dateFormatted}*%0A💰 Total: *$${price.toLocaleString('es-AR')}*%0A%0A¡Gracias!`;
+        const mensaje = `Hola Estancia San Francisco! 👋%0A%0AQuiero encargar:%0A *${selectedPicada.nombre}*%0A📏 Tamaño: *${size}*%0A📅 Para: *${dateFormatted}*%0A💰 Total: *$${price.toLocaleString('es-AR')}*%0A%0A¡Gracias!`;
         btn.href = `https://wa.me/${phone}?text=${mensaje}`;
     }
 
