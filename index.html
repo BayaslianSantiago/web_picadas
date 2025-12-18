@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Picadas - Estancia San Francisco Avellaneda</title>
+    <title>Pedidos - Estancia San Francisco</title>
     <style>
         :root {
             --bordo: #800020;
@@ -47,6 +47,15 @@
             margin: 10px 0 0;
             opacity: 0.95;
             font-size: 1.1rem;
+        }
+
+        .location-banner {
+            background: var(--dorado);
+            color: white;
+            text-align: center;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
         }
 
         .container {
@@ -308,6 +317,12 @@
             border-color: var(--dorado);
         }
 
+        select:disabled, input:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
         .info-box {
             font-size: 0.95rem;
             background: linear-gradient(135deg, #f8f8f8 0%, #efefef 100%);
@@ -369,12 +384,6 @@
             display: none;
             z-index: 1000;
             transition: all 0.3s ease;
-        }
-
-        .btn-order::before {
-            content: '';
-            font-size: 1.3rem;
-            margin-right: 8px;
         }
 
         .btn-order:hover {
@@ -444,9 +453,13 @@
     <p>Armá tu pedido de Picada Premium</p>
 </header>
 
+<div class="location-banner">
+    UNICAMENTE PEDIDOS PARA LA SUCURSAL AVELLANEDA - Av. Bartolomé Mitre 1199, B1870 Avellaneda, Provincia de Buenos Aires
+</div>
+
 <div class="container">
     <h2><span class="step-number">1</span> Seleccioná tu Picada</h2>
-    <p class="scroll-hint">← Deslizá para ver todas las opciones →</p>
+    <p class="scroll-hint">Deslizá para ver todas las opciones</p>
     
     <div class="carousel-container">
         <div id="carousel" class="carousel-wrapper"></div>
@@ -462,14 +475,21 @@
         <p id="selected-ingredients" class="info-box"></p>
 
         <div class="form-group" id="size-group">
-            <label for="size-select"> Elegí el tamaño:</label>
+            <label for="size-select">Elegí el tamaño:</label>
             <select id="size-select" onchange="updateSummary()"></select>
             <div id="size-info" class="size-info"></div>
         </div>
 
         <div class="form-group">
             <label for="delivery-date">¿Para cuándo la querés?</label>
-            <input type="date" id="delivery-date" onchange="updateSummary()">
+            <input type="date" id="delivery-date" onchange="updateTimeOptions()">
+        </div>
+
+        <div class="form-group">
+            <label for="delivery-time">Horario de retiro:</label>
+            <select id="delivery-time" onchange="updateSummary()" disabled>
+                <option value="">Primero seleccioná una fecha</option>
+            </select>
         </div>
 
         <div id="price-display" class="price-display"></div>
@@ -557,6 +577,17 @@
     let selectedPicada = null;
     const phone = "5491173644584";
 
+    // Horarios del local por día
+    const storeHours = {
+        0: { open: '09:30', close: '13:30' }, // Domingo
+        1: { open: '09:30', close: '20:00' }, // Lunes
+        2: { open: '09:30', close: '20:00' }, // Martes
+        3: { open: '09:30', close: '20:00' }, // Miércoles
+        4: { open: '09:30', close: '20:00' }, // Jueves
+        5: { open: '09:30', close: '20:00' }, // Viernes
+        6: { open: '09:30', close: '20:00' }  // Sábado
+    };
+
     // Configurar fecha mínima (hoy)
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('delivery-date').setAttribute('min', today);
@@ -567,7 +598,6 @@
     const carouselNav = document.getElementById('carousel-nav');
     
     picadasData.forEach((p, index) => {
-        // Crear tarjeta
         const card = document.createElement('div');
         card.className = 'picada-card';
         const minPrice = Math.min(...Object.values(p.precios));
@@ -576,13 +606,12 @@
             <div class="picada-info">
                 <h3>${p.nombre}</h3>
                 <p class="picada-description">${p.descripcion}</p>
-                <div class="price-preview">Desde ${minPrice.toLocaleString('es-AR')}</div>
+                <div class="price-preview">Desde $${minPrice.toLocaleString('es-AR')}</div>
             </div>
         `;
         card.onclick = () => selectPicada(p, card);
         carousel.appendChild(card);
 
-        // Crear punto de navegación
         const dot = document.createElement('div');
         dot.className = 'nav-dot';
         if (index === 0) dot.classList.add('active');
@@ -590,7 +619,6 @@
         carouselNav.appendChild(dot);
     });
 
-    // Actualizar puntos de navegación al hacer scroll
     carousel.addEventListener('scroll', () => {
         const cards = carousel.querySelectorAll('.picada-card');
         const dots = carouselNav.querySelectorAll('.nav-dot');
@@ -616,13 +644,11 @@
         document.querySelectorAll('.picada-card').forEach(c => c.classList.remove('selected'));
         element.classList.add('selected');
 
-        // Ocultar alerta si estaba visible
         document.getElementById('alert-select').style.display = 'none';
 
         const optionsSection = document.getElementById('section-options');
         optionsSection.style.display = 'block';
         
-        // Scroll suave a las opciones
         setTimeout(() => {
             optionsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }, 100);
@@ -638,6 +664,71 @@
             opt.innerText = `${size} - $${picada.precios[size].toLocaleString('es-AR')}`;
             sizeSelect.appendChild(opt);
         }
+        
+        updateTimeOptions();
+        updateSummary();
+    }
+
+    function updateTimeOptions() {
+        const dateInput = document.getElementById('delivery-date');
+        const timeSelect = document.getElementById('delivery-time');
+        
+        if (!dateInput.value) {
+            timeSelect.disabled = true;
+            timeSelect.innerHTML = '<option value="">Primero seleccioná una fecha</option>';
+            return;
+        }
+
+        const selectedDate = new Date(dateInput.value + 'T00:00:00');
+        const now = new Date();
+        const isToday = selectedDate.toDateString() === now.toDateString();
+        const dayOfWeek = selectedDate.getDay();
+        
+        const hours = storeHours[dayOfWeek];
+        if (!hours) {
+            timeSelect.disabled = true;
+            timeSelect.innerHTML = '<option value="">Local cerrado este día</option>';
+            return;
+        }
+
+        // Calcular hora mínima (ahora + 2 horas)
+        const minTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+        
+        // Parsear horarios del local
+        const [openHour, openMin] = hours.open.split(':').map(Number);
+        const [closeHour, closeMin] = hours.close.split(':').map(Number);
+        
+        const openTime = new Date(selectedDate);
+        openTime.setHours(openHour, openMin, 0, 0);
+        
+        const closeTime = new Date(selectedDate);
+        closeTime.setHours(closeHour, closeMin, 0, 0);
+
+        timeSelect.innerHTML = '';
+        timeSelect.disabled = false;
+
+        let hasOptions = false;
+        
+        // Generar opciones cada 30 minutos
+        let currentTime = new Date(openTime);
+        while (currentTime < closeTime) {
+            // Si es hoy, solo mostrar horarios después de ahora + 2 horas
+            if (!isToday || currentTime >= minTime) {
+                const timeStr = currentTime.toTimeString().substring(0, 5);
+                const option = document.createElement('option');
+                option.value = timeStr;
+                option.textContent = timeStr;
+                timeSelect.appendChild(option);
+                hasOptions = true;
+            }
+            currentTime = new Date(currentTime.getTime() + 30 * 60 * 1000);
+        }
+
+        if (!hasOptions) {
+            timeSelect.innerHTML = '<option value="">No hay horarios disponibles para hoy (requiere 2 horas de anticipación)</option>';
+            timeSelect.disabled = true;
+        }
+
         updateSummary();
     }
 
@@ -647,6 +738,7 @@
         const size = document.getElementById('size-select').value;
         const price = selectedPicada.precios[size];
         const date = document.getElementById('delivery-date').value;
+        const time = document.getElementById('delivery-time').value;
 
         // Mostrar información del tamaño
         const sizeInfo = document.getElementById('size-info');
@@ -654,27 +746,28 @@
         
         let sizeText = '';
         if (size === 'Chica') {
-            sizeText = '<strong>Comen 2</strong> / Pican 4 personas';
+            sizeText = 'Comen 2 / Pican 4 personas';
         } else if (size === 'Mediana') {
-            sizeText = '<strong>Comen 4</strong> / Pican 6 personas';
+            sizeText = 'Comen 4 / Pican 6 personas';
         } else if (size === 'Grande') {
-            sizeText = '<strong>Comen 6</strong> / Pican 12 personas';
+            sizeText = 'Comen 6 / Pican 12 personas';
         } else if (size.includes('Único')) {
-            sizeText = '<strong>Tamaño único</strong> para 2 personas';
+            sizeText = 'Tamaño único para 2 personas';
         }
-        sizeInfo.innerHTML = sizeText;
+        sizeInfo.innerHTML = `<strong>${sizeText}</strong>`;
 
         document.getElementById('price-display').innerHTML = `
             <div style="font-size: 1rem; color: #666; font-weight: normal;">Total a pagar:</div>
-            ${price.toLocaleString('es-AR')}
+            <div style="font-size: 2.5rem;">$${price.toLocaleString('es-AR')}</div>
         `;
 
         const btn = document.getElementById('whatsapp-btn');
         btn.style.display = 'block';
 
         const dateFormatted = date ? new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'No especificado';
+        const timeFormatted = time || 'No especificado';
         
-        const mensaje = `Hola, quiero encargar una:%0A*${selectedPicada.nombre}*%0A Tamaño:*${size}*%0A Para el *${dateFormatted}*%0A Total:*${price.toLocaleString('es-AR')}*%0A¡Gracias!`;
+        const mensaje = `Hola Estancia San Francisco!%0A%0AQuiero encargar:%0APicada: *${selectedPicada.nombre}*%0ATamaño: *${size}*%0AFecha: *${dateFormatted}*%0AHorario: *${timeFormatted}*%0ATotal: *${price.toLocaleString('es-AR')}*%0A%0ASucursal: Avellaneda - Av. Bartolomé Mitre 1199%0A%0A¡Gracias!`;
         btn.href = `https://wa.me/${phone}?text=${mensaje}`;
     }
 
@@ -688,8 +781,18 @@
             }, 4000);
             return false;
         }
+        
+        const time = document.getElementById('delivery-time').value;
+        if (!time) {
+            alert('Por favor, seleccioná un horario de retiro.');
+            return false;
+        }
+        
         return true;
     }
+
+    // Inicializar opciones de horario al cargar
+    updateTimeOptions();
 </script>
 
 </body>
