@@ -319,19 +319,19 @@
         }
 
         .size-info {
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            background: linear-gradient(135deg, #f8f8f8 0%, #efefef 100%);
             padding: 12px 15px;
             border-radius: 8px;
             margin-top: 10px;
-            border-left: 4px solid #4caf50;
+            border-left: 4px solid var(--dorado);
             font-size: 0.95rem;
-            color: #2e7d32;
+            color: #333;
             font-weight: 500;
             display: none;
         }
 
         .size-info strong {
-            color: #1b5e20;
+            color: var(--bordo);
         }
 
         .price-display {
@@ -440,7 +440,7 @@
 <body>
 
 <header>
-    <h1>🥩 Estancia San Francisco</h1>
+    <h1>Estancia San Francisco</h1>
     <p>Armá tu pedido de picada premium</p>
 </header>
 
@@ -462,7 +462,7 @@
         <p id="selected-ingredients" class="info-box"></p>
 
         <div class="form-group" id="size-group">
-            <label for="size-select">🍽️ Elegí el tamaño:</label>
+            <label for="size-select"> Elegí el tamaño:</label>
             <select id="size-select" onchange="updateSummary()"></select>
             <div id="size-info" class="size-info"></div>
         </div>
@@ -654,19 +654,19 @@
         
         let sizeText = '';
         if (size === 'Chica') {
-            sizeText = '👥 <strong>Comen 2</strong> / Pican 4 personas';
+            sizeText = '<strong>Comen 2</strong> / Pican 4 personas';
         } else if (size === 'Mediana') {
-            sizeText = '👥 <strong>Comen 4</strong> / Pican 6 personas';
+            sizeText = '<strong>Comen 4</strong> / Pican 6 personas';
         } else if (size === 'Grande') {
-            sizeText = '👥 <strong>Comen 6</strong> / Pican 12 personas';
+            sizeText = '<strong>Comen 6</strong> / Pican 12 personas';
         } else if (size.includes('Único')) {
-            sizeText = '👥 <strong>Tamaño único</strong> para 2 personas';
+            sizeText = '<strong>Tamaño único</strong> para 2 personas';
         }
         sizeInfo.innerHTML = sizeText;
 
         document.getElementById('price-display').innerHTML = `
             <div style="font-size: 1rem; color: #666; font-weight: normal;">Total a pagar:</div>
-            ${'$'price.toLocaleString('es-AR')}
+            ${price.toLocaleString('es-AR')}
         `;
 
         const btn = document.getElementById('whatsapp-btn');
@@ -674,7 +674,7 @@
 
         const dateFormatted = date ? new Date(date + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'No especificado';
         
-        const mensaje = `Hola Estancia San Francisco! 👋%0A%0AQuiero encargar:%0A🥩 *${selectedPicada.nombre}*%0A📏 Tamaño: *${size}*%0A📅 Para: *${dateFormatted}*%0A💰 Total: *${price.toLocaleString('es-AR')}*%0A%0A¡Gracias!`;
+        const mensaje = `Hola, %0A%0AQuiero encargar una:%0A *${selectedPicada.nombre}*%0A Tamaño: *${size}*%0A Para: *${dateFormatted}*%0A Total: *${price.toLocaleString('es-AR')}*%0A%0A¡Gracias!`;
         btn.href = `https://wa.me/${phone}?text=${mensaje}`;
     }
 
